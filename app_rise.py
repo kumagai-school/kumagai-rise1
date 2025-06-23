@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 
 # APIエンドポイント（Tower設置PC経由）
-API_URL = "https://app.kumagai-stock.com/api/highlow"
+API_URL = "https://app.kumagai-stock.com/api/highlow/batch"
 
 # ページ設定
 st.set_page_config(page_title="上昇銘柄抽出", layout="wide")
