@@ -1,70 +1,116 @@
+# app_rise.py（Render向けAPI版）
 import streamlit as st
 import pandas as pd
 import requests
 
-# APIエンドポイント
-TODAY_API_URL = "https://app.kumagai-stock.com/api/highlow/today"
-YESTERDAY_API_URL = "https://app.kumagai-stock.com/api/highlow/yesterday"
+# -----------------------
+REALDATA_API = "https://app.kumagai-stock.com/api/real"
+PASTDATA_API = "https://app.kumagai-stock.com/api/past"
+# -----------------------
 
-# 表示用関数
-def fetch_and_display(api_url, label):
-    st.subheader(label)
+TARGET_EXCHANGES = {1, 2, 256}
+MULTIPLE_THRESHOLD = 1.5
+LOOKBACK_DAYS = 14
+
+def load_realdata():
+    res = requests.get(REALDATA_API)
+    res.raise_for_status()
+    df = pd.DataFrame(res.json())
+    df['date'] = pd.to_datetime(df['date'])
+    return df[df['market'].isin(TARGET_EXCHANGES)][['code', 'market', 'high', 'low', 'date']]
+
+def load_past_data():
+    res = requests.get(PASTDATA_API)
+    res.raise_for_status()
+    df = pd.DataFrame(res.json())
+    df['date'] = pd.to_datetime(df['date'])
+    return df[df['market'].isin(TARGET_EXCHANGES)][['code', 'market', 'high', 'low', 'date']]
+
+def extract_rising_stocks(real_df, past_df):
+    combined = pd.concat([real_df, past_df], ignore_index=True)
+    results = []
+
+    for (code, market), group in combined.groupby(['code', 'market']):
+        if group['low'].min() <= 0:
+            continue
+        min_row = group.loc[group['low'].idxmin()]
+        max_row = group.loc[group['high'].idxmax()]
+        ratio = max_row['high'] / min_row['low']
+        if 1.3 <= ratio <= 2.0 and max_row['date'] in real_df['date'].values:
+            results.append({
+                '銘柄コード': code,
+                '最安値日': min_row['date'].date(),
+                '最安値': f"{min_row['low']:.2f}",
+                '最高値日': max_row['date'].date(),
+                '最高値': f"{max_row['high']:.2f}",
+                '倍率': f"{ratio:.2f}"
+            })
+    return pd.DataFrame(results)
+
+def extract_yesterday_high_rise_stocks(real_df, past_df):
+    combined = pd.concat([real_df, past_df], ignore_index=True)
+    results = []
+
+    available_dates = sorted(combined['date'].dropna().unique(), reverse=True)
+    if len(available_dates) < 2:
+        return pd.DataFrame()
+
+    yesterday = available_dates[1]
+    yesterday_data = combined[combined['date'] == yesterday]
+
+    for (code, market), group in combined.groupby(['code', 'market']):
+        if group['low'].min() <= 0:
+            continue
+
+        min_row = group.loc[group['low'].idxmin()]
+        y_rows = yesterday_data[(yesterday_data['code'] == code) & (yesterday_data['market'] == market)]
+        if y_rows.empty:
+            continue
+
+        y_high = y_rows['high'].values[0]
+        max_high = group['high'].max()
+
+        if y_high < max_high:
+            continue
+
+        ratio = y_high / min_row['low']
+        if 1.3 <= ratio <= 2.0:
+            results.append({
+                '銘柄コード': code,
+                '最安値日': min_row['date'].date(),
+                '最安値': f"{min_row['low']:.2f}",
+                '昨日（最高値）日': pd.to_datetime(yesterday).date(),
+                '昨日の高値': f"{y_high:.2f}",
+                '倍率': f"{ratio:.2f}"
+            })
+
+    df = pd.DataFrame(results)
+    if not df.empty:
+        df = df.sort_values(by="倍率", ascending=False)
+    return df
+
+# ---------------- Streamlit ----------------
+st.title("📈「ルール１」スクリーニング")
+
+with st.spinner("データ取得中..."):
     try:
-        res = requests.get(api_url, timeout=15)
-        res.raise_for_status()
-        data = res.json()
+        real_df = load_realdata()
+        past_df = load_past_data()
 
-        if not data:
-            st.info("該当はありません。")
-            return
+        st.subheader("📌 本日の抽出結果")
+        rise_today_df = extract_rising_stocks(real_df, past_df)
+        if rise_today_df.empty:
+            st.info("該当はありません")
+        else:
+            rise_today_df.index = range(1, len(rise_today_df)+1)
+            st.table(rise_today_df)
 
-        df = pd.DataFrame(data)
-
-        # 日付フォーマット
-        df["高値日"] = pd.to_datetime(df["high_date"], format="%Y%m%d").dt.strftime("%Y/%m/%d")
-        df["安値日"] = pd.to_datetime(df["low_date"], format="%Y%m%d").dt.strftime("%Y/%m/%d")
-
-        # 表示用整形
-        expected_columns = ["code", "low", "安値日", "high", "高値日"]
-        if "name" in df.columns:
-            expected_columns.insert(1, "name")  # nameがあれば追加
-
-        df_display = df[expected_columns].copy()
-        
-        col_rename = {
-            "code": "銘柄コード",
-            "name": "銘柄名",
-            "low": "安値",
-            "安値日": "安値日",
-            "high": "高値",
-            "高値日": "高値日"
-        }
-        df_display.rename(columns=col_rename, inplace=True)
-
-
-        # 倍率（小数点2桁）＋リンク
-        df_display["倍率"] = (df["high"] / df["low"]).apply(lambda x: f"{x:.2f} 倍")
-        df_display["銘柄コード"] = df_display["銘柄コード"].apply(
-            lambda code: f"[{code}](https://kabuka-check-app.onrender.com/?code={code})"
-        )
-
-        # インデックス1スタート
-        df_display.index = range(1, len(df_display) + 1)
-
-        st.table(df_display)
-
+        st.subheader("📌 昨日の抽出結果")
+        rise_yesterday_df = extract_yesterday_high_rise_stocks(real_df, past_df)
+        if rise_yesterday_df.empty:
+            st.info("該当はありません")
+        else:
+            rise_yesterday_df.index = range(1, len(rise_yesterday_df)+1)
+            st.table(rise_yesterday_df)
     except Exception as e:
-        st.error(f"データ取得エラー: {e}")
-
-# アプリ表示
-st.title("📈 [ルール１]スクリーニング")
-
-# 昨日の抽出結果（JSON）
-fetch_and_display(YESTERDAY_API_URL, "🔹 昨日の抽出結果")
-
-with st.expander("🔸 本日の抽出結果（時間がかかる場合があります）"):
-# 本日の抽出結果（リアルタイム）
-    fetch_and_display(TODAY_API_URL, "🔸 本日の抽出結果")
-
-# フッター
-st.markdown("<div style='text-align: center; color: gray; font-size: 14px;'>© 2025 KumagaiNext All rights reserved.</div>", unsafe_allow_html=True)
+        st.error(f"データ取得中にエラーが発生しました：{e}")
