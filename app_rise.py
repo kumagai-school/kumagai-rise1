@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 
 # APIエンドポイント
-TODAY_API_URL = "https://app.kumagai-stock.com/api/highlow"
+TODAY_API_URL = "https://app.kumagai-stock.com/api/highlow/today"
 YESTERDAY_API_URL = "https://app.kumagai-stock.com/api/highlow/yesterday"
 
 # 表示用関数
@@ -25,8 +25,22 @@ def fetch_and_display(api_url, label):
         df["安値日"] = pd.to_datetime(df["low_date"], format="%Y%m%d").dt.strftime("%Y/%m/%d")
 
         # 表示用整形
-        df_display = df[["code", "name", "low", "安値日", "high", "高値日"]].copy()
-        df_display.columns = ["銘柄コード", "銘柄名", "安値", "安値日", "高値", "高値日"]
+        expected_columns = ["code", "low", "安値日", "high", "高値日"]
+        if "name" in df.columns:
+            expected_columns.insert(1, "name")  # nameがあれば追加
+
+        df_display = df[expected_columns].copy()
+        
+        col_rename = {
+            "code": "銘柄コード",
+            "name": "銘柄名",
+            "low": "安値",
+            "安値日": "安値日",
+            "high": "高値",
+            "高値日": "高値日"
+        }
+        df_display.rename(columns=col_rename, inplace=True)
+
 
         # 倍率（小数点2桁）＋リンク
         df_display["倍率"] = (df["high"] / df["low"]).apply(lambda x: f"{x:.2f} 倍")
