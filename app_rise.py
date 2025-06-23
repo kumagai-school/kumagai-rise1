@@ -43,11 +43,12 @@ def fetch_and_display(api_url, label):
         st.error(f"データ取得エラー: {e}")
 
 # アプリ表示
-st.title("📈 上昇銘柄 抽出リスト")
+st.title("📈 [ルール１]スクリーニング")
 
 # 昨日の抽出結果（JSON）
 fetch_and_display(YESTERDAY_API_URL, "🔹 昨日の抽出結果")
 
+with st.expander("🔸 本日の抽出結果（時間がかかる場合があります）"):
 # 本日の抽出結果（リアルタイム）
 fetch_and_display(TODAY_API_URL, "🔸 本日の抽出結果")
 
