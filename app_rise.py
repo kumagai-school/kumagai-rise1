@@ -50,7 +50,7 @@ fetch_and_display(YESTERDAY_API_URL, "🔹 昨日の抽出結果")
 
 with st.expander("🔸 本日の抽出結果（時間がかかる場合があります）"):
 # 本日の抽出結果（リアルタイム）
-fetch_and_display(TODAY_API_URL, "🔸 本日の抽出結果")
+    fetch_and_display(TODAY_API_URL, "🔸 本日の抽出結果")
 
 # フッター
 st.markdown("<div style='text-align: center; color: gray; font-size: 14px;'>© 2025 KumagaiNext All rights reserved.</div>", unsafe_allow_html=True)
