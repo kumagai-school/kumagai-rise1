@@ -13,7 +13,7 @@ st.caption("※ Tower API（Cloudflare Tunnel 経由）と連携してリアル�
 
 # データ取得
 try:
-    res = requests.get(API_URL, timeout=10)
+    res = requests.get(API_URL, timeout=30)
     res.raise_for_status()
     data = res.json()
 
