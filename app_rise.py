@@ -7,13 +7,18 @@ st.set_page_config(page_title="上昇銘柄リスト", layout="wide")
 
 def load_data(source):
     try:
-        if source == "today":
-            url = "https://app.kumagai-stock.com/api/highlow/today"
-        else:
-            url = "https://app.kumagai-stock.com/api/highlow/yesterday"
+        url = "https://app.kumagai-stock.com/api/highlow/today" if source == "today" else "https://app.kumagai-stock.com/api/highlow/yesterday"
         res = requests.get(url, timeout=10)
         res.raise_for_status()
-        return pd.DataFrame(res.json())
+        data = res.json()
+        st.subheader("📦 デバッグ：JSONレスポンス")
+        st.json(data)
+
+        df = pd.DataFrame(data)
+        st.subheader("📋 デバッグ：DataFrame表示")
+        st.write(df)
+        st.write("📑 カラム一覧:", df.columns.tolist())
+        return df
     except Exception as e:
         st.error(f"データ取得エラー: {e}")
         return pd.DataFrame()
@@ -27,10 +32,11 @@ df = load_data(data_source)
 if df.empty:
     st.info("データがありません。")
 else:
-    df = df[["code", "low", "low_date", "high", "high_date", "倍率"]]
-    df.columns = ["銘柄コード", "最安値", "最安値日", "高値", "高値日", "倍率"]
-    df["倍率"] = df["倍率"].map(lambda x: f"{x:.2f}倍")
-    df["銘柄コード"] = df["銘柄コード"].apply(lambda x: f"[{x}](https://www.google.com/search?q={x}+株価)")
-    st.dataframe(df, use_container_width=True)
-
-st.markdown("<div style='text-align: center; color: gray; font-size: 14px;'>© 2025 KumagaiNext All rights reserved.</div>", unsafe_allow_html=True)
+    try:
+        df = df[["code", "low", "low_date", "high", "high_date", "倍率"]]
+        df.columns = ["銘柄コード", "最安値", "最安値日", "高値", "高値日", "倍率"]
+        df["倍率"] = pd.to_numeric(df["倍率"], errors="coerce").map(lambda x: f"{x:.2f}倍")
+        df["銘柄コード"] = df["銘柄コード"].apply(lambda x: f"[{x}](https://www.google.com/search?q={x}+株価)")
+        st.dataframe(df, use_container_width=True)
+    except Exception as e:
+        st.error(f"データ整形中のエラー: {e}")
