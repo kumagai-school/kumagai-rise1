@@ -56,7 +56,7 @@ else:
                 padding:10px;
                 margin-bottom:10px;
                 background:#f9f9f9;
-                font-size:15px;
+                font-size:20px;
                 line-height:1.6em;
             '>
                 <b>{name}（{code_link}）</b>　
