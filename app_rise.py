@@ -3,8 +3,7 @@ import pandas as pd
 import requests
 
 st.set_page_config(page_title="スクリーニング", layout="wide")
-st.markdown("<h2 style='font-size:22px;'>📈 [ルール1]<br>
-スクリーニング</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-size:22px;'>📈 [ルール1]スクリーニング</h2>", unsafe_allow_html=True)
 
 # データ取得関数
 def load_data(source):
