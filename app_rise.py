@@ -30,14 +30,11 @@ else:
         df.columns = ["銘柄コード", "最安値", "最安値日", "高値", "高値日", "倍率"]
         df["倍率"] = pd.to_numeric(df["倍率"], errors="coerce").map(lambda x: f"{x:.2f}倍")
         df["銘柄コード"] = df["銘柄コード"].apply(
-            lambda x: f"[{x}](https://kabuka-check-app.onrender.com/?code={x})"
+            lambda x: f'<a href="https://kabuka-check-app.onrender.com/?code={x}" target="_blank">{x}</a>'
         )
 
-        # スクロール不要の表示（HTMLテーブルレンダリング）
-        st.markdown(
-            df.to_markdown(index=False),
-            unsafe_allow_html=False
-        )
+        # HTMLで表を直接表示（依存なし）
+        st.markdown(df.to_html(index=False, escape=False), unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"データ整形中のエラー: {e}")
