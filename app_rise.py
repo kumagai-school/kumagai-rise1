@@ -51,7 +51,7 @@ else:
             <div style='border:1px solid #ccc; border-radius:10px; padding:10px; margin-bottom:10px; background:#f9f9f9;'>
                 <b>{name}（{code_link}）</b>　
                 <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 最安値：{row["low"]}（{row["low_date"]}）<br>
+                📉 安値：{row["low"]}（{row["low_date"]}）<br>
                 📈 高値　：{row["high"]}（{row["high_date"]}）
             </div>
             """,
@@ -59,19 +59,20 @@ else:
         )
 
 st.markdown("---")
-st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=True)
-
-st.markdown("""
-<div style='color:red; font-size:14px;'>
+sst.markdown("""
+<hr>
+<h4>📌 <strong>注意事項</strong></h4>
+<div style='color:red; font-size:13px;'>
 <ul>
-  <li>このアプリはETFなど「ルール１」対象外の銘柄も表示されます。</li>
-  <li>平日8時30分～9時に5分程度のメンテナンスが入ることがあります。</li>
-  <li>「本日の抽出銘柄」はザラ場中は約１時間毎更新いたします。</li>
+  <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
+  <li>平日8時30分～9時に10分程度のメンテナンスが入ることがあります。</li>
+  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
 </ul>
 </div>
+<hr>
 """, unsafe_allow_html=True)
-
 st.markdown("---")
+
 st.markdown("""
 <div style='
     text-align: center;
