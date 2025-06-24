@@ -24,19 +24,20 @@ df = load_data(data_source)
 if df.empty:
     st.info("データがありません。")
 else:
-    try:
-        # カラム整形
-        df = df[["code", "name", "low", "low_date", "high", "high_date", "倍率"]]
-        df.columns = ["銘柄コード", "企業名", "安値", "安値日", "高値", "高値日", "倍率"]
-        df["倍率"] = pd.to_numeric(df["倍率"], errors="coerce").map(lambda x: f"{x:.2f}倍")
-
-        # 銘柄コード列にHTMLリンクを埋め込み
-        df["銘柄コード"] = df["銘柄コード"].apply(
-            lambda code: f'<a href="https://kabuka-check-app.onrender.com/?code={code}" target="_blank">{code}</a>'
+    for _, row in df.iterrows():
+        code_link = f'<a href="https://kabuka-check-app.onrender.com/?code={row["code"]}" target="_blank">{row["code"]}</a>'
+        name = row.get("name", "")
+        st.markdown(
+            f"""
+            <div style='border:1px solid #ccc; border-radius:10px; padding:10px; margin-bottom:10px; background:#f9f9f9;'>
+                <b>{name}（{code_link}）</b>　
+                <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
+                📉 最安値：{row["low"]}（{row["low_date"]}）<br>
+                📈 高値　：{row["high"]}（{row["high_date"]}）
+            </div>
+            """,
+            unsafe_allow_html=True
         )
-
-        # HTML形式で表を表示（スクロール不要＆リンク有効）
-        st.markdown(df.to_html(escape=False, index=False), unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"データ整形中のエラー: {e}")
