@@ -32,7 +32,7 @@ else:
 
         # 銘柄コード列にHTMLリンクを埋め込み
         df["銘柄コード"] = df["銘柄コード"].apply(
-            lambda code: f'<a href="https://kabuka-check-app3.onrender.com/?code={code}" target="_blank">{code}</a>'
+            lambda code: f'<a href="https://kabuka-check-app.onrender.com/?code={code}" target="_blank">{code}</a>'
         )
 
         # HTML形式で表を表示（スクロール不要＆リンク有効）
