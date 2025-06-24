@@ -12,7 +12,7 @@ st.markdown("""
 st.markdown("---")
 sst.markdown("""
 <hr>
-<h4>📌 <strong>注意事項</strong></h4>
+<h4>📍<strong>注意事項</strong></h4>
 <div style='color:red; font-size:13px;'>
 <ul>
   <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
@@ -61,7 +61,7 @@ else:
 st.markdown("---")
 sst.markdown("""
 <hr>
-<h4>📌 <strong>注意事項</strong></h4>
+<h4>📍<strong>注意事項</strong></h4>
 <div style='color:red; font-size:13px;'>
 <ul>
   <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
