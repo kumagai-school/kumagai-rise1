@@ -14,18 +14,18 @@ st.markdown("""
 <div style='
     border: 1px solid red;
     background-color: #ffffff;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
     font-size: 13px;
     color: #b30000;
     margin-bottom: 20px;
+    line-height: 1.6em;
 '>
-<li>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。参考情報としてご利用ください。</li>
-<li>⚠️ 平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
-<li>⚠️ 「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
+<p>⚠️ このアプリには ETF など「ルール1」対象外の銘柄も含まれています。</p>
+<p>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
+<p>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
 </div>
 """, unsafe_allow_html=True)
-
 
 # データ取得関数
 def load_data(source):
