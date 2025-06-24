@@ -7,7 +7,7 @@ st.set_page_config(page_title="上昇銘柄リスト", layout="wide")
 st.title("📈 上昇銘柄 抽出リスト")
 
 # データ取得関数
-def load_data(source):
+df = load_data(data_source):
     try:
         url = "https://app.kumagai-stock.com/api/highlow/today" if source == "today" else "https://app.kumagai-stock.com/api/highlow/yesterday"
         res = requests.get(url, timeout=10)
@@ -26,7 +26,7 @@ if df.empty:
     st.info("データがありません。")
 else:
     try:
-        df = pd.DataFrame(res.json(), dtype=str)  # 全データを文字列化
+        df = df.astype(str)  # 全データを文字列化
         df = df[["code", "low", "low_date", "high", "high_date", "倍率"]]
         df.columns = ["銘柄コード", "最安値", "最安値日", "高値", "高値日", "倍率"]
         df["倍率"] = df["倍率"].astype(float).map(lambda x: f"{x:.2f}倍")
