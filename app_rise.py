@@ -22,11 +22,11 @@ st.markdown("---")
 st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=True)
 
 st.markdown("""
-<div style='color:red; font-size:13px;'>
+<div style='color:red; font-size:14px;'>
 <ul>
-  <li>抽出結果には「ルール1」対象ではない銘柄も表示されます</li>
-  <li>平日8時30分から9時に10分程度のメンテナンスが入ることがあります</li>
-  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります</li>
+  <li>このアプリはETFなど「ルール１」対象外の銘柄も表示されます。</li>
+  <li>平日8時30分～9時に5分程度のメンテナンスが入ることがあります。</li>
+  <li>「本日の抽出銘柄」はザラ場中は約１時間毎更新いたします。</li>
 </ul>
 </div>
 """, unsafe_allow_html=True)
@@ -71,15 +71,14 @@ st.markdown("---")
 st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=True)
 
 st.markdown("""
-<div style='color:red; font-size:13px;'>
+<div style='color:red; font-size:14px;'>
 <ul>
-  <li>抽出結果にはルール1対象でないものも表示されます</li>
-  <li>平日8時30分から9時に10分程度のメンテナンスが入ることがあります</li>
-  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります</li>
+  <li>このアプリはETFなど「ルール１」対象外の銘柄も表示されます。</li>
+  <li>平日8時30分～9時に5分程度のメンテナンスが入ることがあります。</li>
+  <li>「本日の抽出銘柄」はザラ場中は約１時間毎更新いたします。</li>
 </ul>
 </div>
 """, unsafe_allow_html=True)
-
 
 st.markdown("---")
 st.markdown("""
