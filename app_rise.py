@@ -13,14 +13,16 @@ st.markdown("""
 st.markdown("""
 <div style='
     border: 1px solid red;
-    background-color: #ffe6e6;
+    background-color: #ffffff;
     padding: 10px;
     border-radius: 8px;
     font-size: 13px;
     color: #b30000;
     margin-bottom: 20px;
 '>
-⚠️ このアプリには ETF など「ルール1」対象外の銘柄も含まれています。参考情報としてご利用ください。
+<li>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。参考情報としてご利用ください。</li>
+<li>⚠️ 平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
+<li>⚠️ 「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
 </div>
 """, unsafe_allow_html=True)
 
