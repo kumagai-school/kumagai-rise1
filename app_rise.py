@@ -26,13 +26,14 @@ if df.empty:
     st.info("データがありません。")
 else:
     try:
-        df = pd.DataFrame(res.json(), dtype=str) 
+        df = pd.DataFrame(res.json(), dtype=str)  # 全データを文字列化
         df = df[["code", "low", "low_date", "high", "high_date", "倍率"]]
         df.columns = ["銘柄コード", "最安値", "最安値日", "高値", "高値日", "倍率"]
-        df["倍率"] = pd.to_numeric(df["倍率"], errors="coerce").map(lambda x: f"{x:.2f}倍")
+        df["倍率"] = df["倍率"].astype(float).map(lambda x: f"{x:.2f}倍")
         df["銘柄コード"] = df["銘柄コード"].apply(
             lambda x: f'<a href="https://kabuka-check-app.onrender.com/?code={x}" target="_blank">{x}</a>'
         )
+
 
         # HTMLで表を直接表示（依存なし）
         st.markdown(df.to_html(index=False, escape=False), unsafe_allow_html=True)
