@@ -4,33 +4,24 @@ import requests
 
 st.set_page_config(page_title="スクリーニング", layout="wide")
 
-# CSS（入力欄の文字拡大）
-st.markdown("""
-    <style>
-    input[type="number"], input[type="text"] {
-        font-size: 22px !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
 st.markdown("""
     <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
         『ルール1』<br>スクリーニングアプリ
     </h1>
 
 st.markdown("---")
-st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=True)
-
-st.markdown("""
-<div style='color:red; font-size:14px;'>
+sst.markdown("""
+<hr>
+<h4>📌 <strong>注意事項</strong></h4>
+<div style='color:red; font-size:13px;'>
 <ul>
-  <li>このアプリはETFなど「ルール１」対象外の銘柄も表示されます。</li>
-  <li>平日8時30分～9時に5分程度のメンテナンスが入ることがあります。</li>
-  <li>「本日の抽出銘柄」はザラ場中は約１時間毎更新いたします。</li>
+  <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
+  <li>平日8時30分～9時に10分程度のメンテナンスが入ることがあります。</li>
+  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
 </ul>
 </div>
+<hr>
 """, unsafe_allow_html=True)
-
 st.markdown("---")
 
 # データ取得関数
