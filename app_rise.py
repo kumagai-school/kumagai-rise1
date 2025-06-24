@@ -8,17 +8,9 @@ st.markdown("""
     <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
         『ルール1』<br>スクリーニングアプリ
     </h1>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<hr>
-<h4>
-<div style='color:red; font-size:13px;'>
-<ul>
-  <li>2週間以内で1.3-2倍に暴騰した銘柄をピックアップしています</li>
-</ul>
-</div>
-<hr>
+    <h1 style='text-align:left; color:#000000; font-size:15px; line-height:1.4em;'>
+        2週間以内で1.3-2倍に暴騰した銘柄をピックアップしています
+    </h1>
 """, unsafe_allow_html=True)
 
 st.markdown("""
