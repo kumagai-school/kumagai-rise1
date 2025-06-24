@@ -21,7 +21,7 @@ st.markdown("""
     margin-bottom: 20px;
     line-height: 1.6em;
 '>
-<p>⚠️ このアプリには ETF など「ルール1」対象外の銘柄も含まれています。</p>
+<p⚠️ このアプリには ETF など「ルール1」対象外の銘柄も含まれています。</p>
 <p>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
 <p>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
 </div>
@@ -50,11 +50,19 @@ else:
         name = row.get("name", "")
         st.markdown(
             f"""
-            <div style='border:1px solid #ccc; border-radius:10px; padding:10px; margin-bottom:10px; background:#f9f9f9;'>
+            <div style='
+                border:1px solid #ccc;
+                border-radius:10px;
+                padding:10px;
+                margin-bottom:10px;
+                background:#f9f9f9;
+                font-size:15px;
+                line-height:1.6em;
+            '>
                 <b>{name}（{code_link}）</b>　
                 <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 安値：{row["low"]}（{row["low_date"]}）<br>
-                📈 高値：{row["high"]}（{row["high_date"]}）
+                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
+                📈 高値 ： {row["high"]}（{row["high_date"]}）
             </div>
             """,
             unsafe_allow_html=True
