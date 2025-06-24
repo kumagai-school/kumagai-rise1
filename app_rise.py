@@ -7,7 +7,7 @@ st.set_page_config(page_title="上昇銘柄リスト", layout="wide")
 st.title("📈 上昇銘柄 抽出リスト")
 
 # データ取得関数
-df = load_data(data_source):
+df = load_data(data_source)
     try:
         url = "https://app.kumagai-stock.com/api/highlow/today" if source == "today" else "https://app.kumagai-stock.com/api/highlow/yesterday"
         res = requests.get(url, timeout=10)
