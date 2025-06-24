@@ -3,7 +3,23 @@ import pandas as pd
 import requests
 
 st.set_page_config(page_title="スクリーニング", layout="wide")
-st.markdown("<h2 style='font-size:22px;'>📈 [ルール1]スクリーニング</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-size:28px;'>📈 [ルール1]</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-size:28px;'>スクリーニング</h2>", unsafe_allow_html=True)
+
+st.markdown("---")
+st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=True)
+
+st.markdown("""
+<div style='color:red; font-size:12px;'>
+<ul>
+  <li>抽出結果にはETFなどルール1対象でないものも表示されます。</li>
+  <li>平日8時30分～9時に5分程度のメンテナンスが入ることがあります。</li>
+  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
+</ul>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
 
 # データ取得関数
 def load_data(source):
