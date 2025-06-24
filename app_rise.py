@@ -14,8 +14,8 @@ st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=Tru
 st.markdown("""
 <div style='color:red; font-size:13px;'>
 <ul>
-  <li>抽出結果にはETFなどルール1対象でないものも表示されます</li>
-  <li>平日8時30分～9時に10分程度のメンテナンスが入ることがあります</li>
+  <li>抽出結果にはETFなどルール1対象ではない銘柄も表示されます</li>
+  <li>平日８時３０分～９時に１０分程度のメンテナンスが入ることがあります</li>
   <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります</li>
 </ul>
 </div>
