@@ -10,6 +10,22 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<hr>
+<h4>📍<strong>注意事項</strong></h4>
+<div style='color:red; font-size:13px;'>
+<ul>
+  <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
+  <li>平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
+  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
+</ul>
+</div>
+<hr>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+
+
 # データ取得関数
 def load_data(source):
     try:
@@ -42,8 +58,6 @@ else:
             """,
             unsafe_allow_html=True
         )
-
-st.markdown("---")
 
 st.markdown("""
 <hr>
