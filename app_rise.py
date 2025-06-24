@@ -3,7 +3,8 @@ import pandas as pd
 import requests
 
 st.set_page_config(page_title="スクリーニング", layout="wide")
-st.title("📈 [ルール1]スクリーニング")
+<div style=font-size:22px;'>st.title("📈 [ルール1]<br>
+スクリーニング")</div>
 
 # データ取得関数
 def load_data(source):
