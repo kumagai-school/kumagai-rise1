@@ -11,19 +11,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<hr>
-<h4>📍<strong>注意事項</strong></h4>
-<div style='color:red; font-size:13px;'>
-<ul>
-  <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
-  <li>平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
-  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
-</ul>
+<div style='
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #b30000;
+    margin-bottom: 20px;
+'>
+⚠️ このアプリには ETF など「ルール1」対象外の銘柄も含まれています。参考情報としてご利用ください。
 </div>
-<hr>
 """, unsafe_allow_html=True)
-
-st.markdown("""
 
 
 # データ取得関数
