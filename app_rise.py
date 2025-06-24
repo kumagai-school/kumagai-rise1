@@ -11,6 +11,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
+<hr>
+<h4>
+<div style='color:red; font-size:13px;'>
+<ul>
+  <li>2週間以内で1.3-2倍に暴騰した銘柄をピックアップしています</li>
+</ul>
+</div>
+<hr>
+""", unsafe_allow_html=True)
+
+st.markdown("""
 <div style='
     border: 1px solid red;
     background-color: #ffffff;
