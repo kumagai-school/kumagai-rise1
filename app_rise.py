@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import requests
@@ -28,7 +29,15 @@ else:
         df = df[["code", "low", "low_date", "high", "high_date", "倍率"]]
         df.columns = ["銘柄コード", "最安値", "最安値日", "高値", "高値日", "倍率"]
         df["倍率"] = pd.to_numeric(df["倍率"], errors="coerce").map(lambda x: f"{x:.2f}倍")
-        df["銘柄コード"] = df["銘柄コード"].apply(lambda x: f"[{x}](https://www.google.com/search?q={x}+株価)")
-        st.dataframe(df, use_container_width=True)
+        df["銘柄コード"] = df["銘柄コード"].apply(
+            lambda x: f"[{x}](https://kabuka-check-app.onrender.com/?code={x})"
+        )
+
+        # スクロール不要の表示（HTMLテーブルレンダリング）
+        st.markdown(
+            df.to_markdown(index=False),
+            unsafe_allow_html=False
+        )
+
     except Exception as e:
         st.error(f"データ整形中のエラー: {e}")
