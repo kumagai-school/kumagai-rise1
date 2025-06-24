@@ -9,7 +9,7 @@ st.markdown("""
         『ルール1』<br>スクリーニングアプリ
     </h1>
     <h1 style='text-align:left; color:#000000; font-size:15px; line-height:1.4em;'>
-        2週間以内で1.3-2倍に暴騰した銘柄をピックアップしています
+        2週間以内で1.3-2倍に暴騰した銘柄を抽出しています
     </h1>
 """, unsafe_allow_html=True)
 
