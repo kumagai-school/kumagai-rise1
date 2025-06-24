@@ -8,6 +8,7 @@ st.markdown("""
     <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
         『ルール1』<br>スクリーニングアプリ
     </h1>
+""", unsafe_allow_html=True)
 
 # データ取得関数
 def load_data(source):
@@ -20,8 +21,8 @@ def load_data(source):
         return pd.DataFrame()
 
 # 表示対象選択
-option = st.radio("表示対象を選んでください", ["本日の抽出", "昨日の抽出"], horizontal=True)
-data_source = "today" if option == "本日の抽出" else "yesterday"
+option = st.radio("表示対象を選んでください", ["本日の抽出結果", "昨日の抽出結果"], horizontal=True)
+data_source = "today" if option == "本日の抽出結果" else "yesterday"
 df = load_data(data_source)
 
 if df.empty:
@@ -35,7 +36,7 @@ else:
             <div style='border:1px solid #ccc; border-radius:10px; padding:10px; margin-bottom:10px; background:#f9f9f9;'>
                 <b>{name}（{code_link}）</b>　
                 <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 最安値：{row["low"]}（{row["low_date"]}）<br>
+                📉 安値：{row["low"]}（{row["low_date"]}）<br>
                 📈 高値　：{row["high"]}（{row["high_date"]}）
             </div>
             """,
@@ -43,19 +44,19 @@ else:
         )
 
 st.markdown("---")
-sst.markdown("""
+
+st.markdown("""
 <hr>
 <h4>📍<strong>注意事項</strong></h4>
 <div style='color:red; font-size:13px;'>
 <ul>
   <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
-  <li>平日8時30分～9時に10分程度のメンテナンスが入ることがあります。</li>
+  <li>平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
   <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
 </ul>
 </div>
 <hr>
 """, unsafe_allow_html=True)
-st.markdown("---")
 
 st.markdown("""
 <div style='
@@ -69,4 +70,3 @@ st.markdown("""
 &copy; 2025 KumagaiNext All rights reserved.
 </div>
 """, unsafe_allow_html=True)
-
