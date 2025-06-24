@@ -13,6 +13,11 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
+# 表示対象選択
+option = st.radio("表示対象を選んでください", ["本日の抽出結果", "昨日の抽出結果"], horizontal=True)
+data_source = "today" if option == "本日の抽出結果" else "yesterday"
+df = load_data(data_source)
+
 st.markdown("""
 <div style='
     border: 1px solid red;
@@ -41,10 +46,6 @@ def load_data(source):
         return pd.DataFrame()
 
 # 表示対象選択
-option = st.radio("表示対象を選んでください", ["本日の抽出結果", "昨日の抽出結果"], horizontal=True)
-data_source = "today" if option == "本日の抽出結果" else "yesterday"
-df = load_data(data_source)
-
 if df.empty:
     st.info("データがありません。")
 else:
