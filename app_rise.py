@@ -19,12 +19,11 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-# ラジオボタン選択
-option = st.radio("表示対象を選んでください", ["本日の抽出結果", "昨日の抽出結果"], horizontal=True)
-data_source = "today" if option == "本日の抽出結果" else "yesterday"
+# 表示対象選択
+option = st.radio("表示対象を選んでください", ["本日の抽出", "昨日の抽出"], horizontal=True)
+data_source = "today" if option == "本日の抽出" else "yesterday"
 df = load_data(data_source)
 
-# 表示処理
 if df.empty:
     st.info("データがありません。")
 else:
@@ -36,7 +35,7 @@ else:
             <div style='border:1px solid #ccc; border-radius:10px; padding:10px; margin-bottom:10px; background:#f9f9f9;'>
                 <b>{name}（{code_link}）</b>　
                 <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 安値：{row["low"]}（{row["low_date"]}）<br>
+                📉 最安値：{row["low"]}（{row["low_date"]}）<br>
                 📈 高値　：{row["high"]}（{row["high_date"]}）
             </div>
             """,
