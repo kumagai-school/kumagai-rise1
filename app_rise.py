@@ -39,8 +39,6 @@ else:
             unsafe_allow_html=True
         )
 
-    except Exception as e:
-        st.error(f"データ整形中のエラー: {e}")
 st.markdown("---")
 st.markdown("<h4>📌 <strong>注意事項</strong></h4>", unsafe_allow_html=True)
 
