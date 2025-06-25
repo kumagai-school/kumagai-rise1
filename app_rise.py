@@ -42,8 +42,8 @@ def load_data(source):
         return pd.DataFrame()
 
 # 表示対象選択
-option = st.radio("表示対象を選んでください", ["本日の抽出結果", "昨日の抽出結果"], horizontal=True)
-data_source = "today" if option == "本日の抽出結果" else "yesterday"
+option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値"], horizontal=True)
+data_source = "today" if option == "本日高値" else "yesterday"
 df = load_data(data_source)
 
 if df.empty:
