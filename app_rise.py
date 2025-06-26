@@ -76,7 +76,7 @@ else:
 
         with st.container():
             # グレーの背景と枠線をStreamlitのlayoutで構成
-            with st.markdown(
+            st.markdown(
                 f"""
                 <div style='
                     border:1px solid #ccc;
@@ -93,7 +93,7 @@ else:
                 📈 高値 ： {row["high"]}（{row["high_date"]}）<br>
                 """,
                 unsafe_allow_html=True
-            ):
+            )
                 try:
                     candle_url = "https://app.kumagai-stock.com/api/candle"
                     resp = requests.get(candle_url, params={"code": code})
@@ -130,10 +130,6 @@ else:
                         st.caption("（チャートデータなし）")
                 except Exception as e:
                     st.caption(f"（エラー: {e}）")
-
-            # HTMLの枠閉じタグ（絶対にst.plotly_chartの後にしないこと）
-            st.markdown("</div>", unsafe_allow_html=True)
-
 
 st.markdown("""
 <hr>
