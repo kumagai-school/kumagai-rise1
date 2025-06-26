@@ -95,7 +95,7 @@ else:
                 unsafe_allow_html=True
             )
            # チャート（タイトル・ラベルなし、グレー枠の中に収まる）
-           try:
+            try:
                candle_url = "https://app.kumagai-stock.com/api/candle"
                resp = requests.get(candle_url, params={"code": code})
                chart_data = resp.json().get("data", [])
