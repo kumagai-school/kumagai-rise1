@@ -48,12 +48,12 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値", "2日前高値", "3日前高値"], horizontal=True)
+option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前"], horizontal=True)
 data_source = {
-    "本日高値": "today",
-    "昨日高値": "yesterday",
-    "2日前高値": "target2day",
-    "3日前高値": "target3day"
+    "本日": "today",
+    "昨日": "yesterday",
+    "2日前": "target2day",
+    "3日前": "target3day"
 }[option]
 
 df = load_data(data_source)
