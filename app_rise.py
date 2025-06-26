@@ -80,17 +80,17 @@ else:
                 """
                 <style>
                 .stock-box {
-                    border:1px solid #ccc;
-                    border-radius:10px;
-                    background-color:#f9f9f9;
-                    padding:15px;
-                    margin-bottom:25px;
+                    background-color: #f9f9f9;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    padding: 15px;
+                    margin-bottom: 30px;
                 }
                 </style>
                 """,
                 unsafe_allow_html=True
             )
-            st.markdown('<div class="stock-box">', unsafe_allow_html=True)
+            st.markdown('<div class="gray-box">', unsafe_allow_html=True)
 
             # テキスト情報
             st.write(f"**{name}（{code_link}）　{row['倍率']:.2f}倍**")
