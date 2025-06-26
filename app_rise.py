@@ -69,53 +69,53 @@ df = load_data(data_source)
 if df.empty:
     st.info("データがありません。")
 else:
-for _, row in df.iterrows():
-    code = row["code"]
-    name = row.get("name", "")
-    code_link = f"[{code}](https://kabuka-check-app.onrender.com/?code={code})"
+    for _, row in df.iterrows():
+        code = row["code"]
+        name = row.get("name", "")
+        code_link = f"[{code}](https://kabuka-check-app.onrender.com/?code={code})"
 
-    with st.container():
-        # ボックス風に見せる方法：カラム＋空行＋背景色風のブロック
-        with st.expander(f"{name}（{code}）　{row['倍率']:.2f}倍", expanded=True):
-            st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
-            st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
+        with st.container():
+            # ボックス風に見せる方法：カラム＋空行＋背景色風のブロック
+            with st.expander(f"{name}（{code}）　{row['倍率']:.2f}倍", expanded=True):
+                st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
+                st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
 
-            try:
-                candle_url = "https://app.kumagai-stock.com/api/candle"
-                resp = requests.get(candle_url, params={"code": code})
-                chart_data = resp.json().get("data", [])
+                try:
+                    candle_url = "https://app.kumagai-stock.com/api/candle"
+                    resp = requests.get(candle_url, params={"code": code})
+                    chart_data = resp.json().get("data", [])
 
-                if chart_data:
-                    df_chart = pd.DataFrame(chart_data)
-                    df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
+                    if chart_data:
+                        df_chart = pd.DataFrame(chart_data)
+                        df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
 
-                    fig = go.Figure(data=[
-                        go.Candlestick(
-                            x=df_chart["date_str"],
-                            open=df_chart["open"],
-                            high=df_chart["high"],
-                            low=df_chart["low"],
-                            close=df_chart["close"],
-                            increasing_line_color='red',
-                            decreasing_line_color='blue',
-                            hoverinfo="skip"
+                        fig = go.Figure(data=[
+                            go.Candlestick(
+                                x=df_chart["date_str"],
+                                open=df_chart["open"],
+                                high=df_chart["high"],
+                                low=df_chart["low"],
+                                close=df_chart["close"],
+                                increasing_line_color='red',
+                                decreasing_line_color='blue',
+                                hoverinfo="skip"
+                            )
+                        ])
+                        fig.update_layout(
+                            margin=dict(l=10, r=10, t=10, b=10),
+                            xaxis=dict(visible=False),
+                            yaxis=dict(visible=False),
+                            xaxis_rangeslider_visible=False,
+                            height=200,
                         )
-                    ])
-                    fig.update_layout(
-                        margin=dict(l=10, r=10, t=10, b=10),
-                        xaxis=dict(visible=False),
-                        yaxis=dict(visible=False),
-                        xaxis_rangeslider_visible=False,
-                        height=200,
-                    )
 
-                    # ✅ チャートはexpander内で枠内表示される
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
-                    st.caption("（チャートデータなし）")
-            except Exception as e:
-                st.caption(f"（エラー: {e}）")    
-            st.markdown('</div>', unsafe_allow_html=True)
+                        # ✅ チャートはexpander内で枠内表示される
+                        st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.caption("（チャートデータなし）")
+                except Exception as e:
+                    st.caption(f"（エラー: {e}）")    
+                st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <hr>
