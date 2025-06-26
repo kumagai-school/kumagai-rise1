@@ -90,61 +90,56 @@ else:
                 """,
             unsafe_allow_html=True
             )
+
+            box = st.container()
+            with box:
+
+                st.markdown('<div class="stock-box">', unsafe_allow_html=True)
+
+                st.write(f"**{name}（{code_link}）　{row['倍率']:.2f}倍**")
+                st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
+                st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
+
+                # チャート表示
+                try:
+                    candle_url = "https://app.kumagai-stock.com/api/candle"
+                    resp = requests.get(candle_url, params={"code": code})
+                    chart_data = resp.json().get("data", [])
+
+                    if chart_data:
+                        df_chart = pd.DataFrame(chart_data)
+                        df_chart["date"] = pd.to_datetime(df_chart["date"], errors="coerce")
+                        df_chart["date_str"] = df_chart["date"].dt.strftime("%Y-%m-%d")
+
+                        fig = go.Figure(data=[
+                            go.Candlestick(
+                                x=df_chart["date_str"],
+                                open=df_chart["open"],
+                                high=df_chart["high"],
+                                low=df_chart["low"],
+                                close=df_chart["close"],
+                                increasing_line_color='red',
+                                decreasing_line_color='blue',
+                                hoverinfo="skip"
+                            )
+                        ])
     
-            # HTML div を Streamlit 要素のラップとして使用
-            st.markdown("<div class='stock-box'>", unsafe_allow_html=True)
-
-            # 内容表示
-            st.markdown(
-                f"""
-                <b>{name}（{code_link}）</b>　
-                <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
-                📈 高値 ： {row["high"]}（{row["high_date"]}）
-                """,
-                unsafe_allow_html=True
-            )
-
-            # チャート表示
-            try:
-                candle_url = "https://app.kumagai-stock.com/api/candle"
-                resp = requests.get(candle_url, params={"code": code})
-                chart_data = resp.json().get("data", [])
-
-                if chart_data:
-                    df_chart = pd.DataFrame(chart_data)
-                    df_chart["date"] = pd.to_datetime(df_chart["date"], errors="coerce")
-                    df_chart["date_str"] = df_chart["date"].dt.strftime("%Y-%m-%d")
-
-                    fig = go.Figure(data=[
-                        go.Candlestick(
-                            x=df_chart["date_str"],
-                            open=df_chart["open"],
-                            high=df_chart["high"],
-                            low=df_chart["low"],
-                            close=df_chart["close"],
-                            increasing_line_color='red',
-                            decreasing_line_color='blue',
-                            hoverinfo="skip"
+                        fig.update_layout(
+                            margin=dict(l=10, r=10, t=10, b=10),
+                            xaxis=dict(visible=False),
+                            yaxis=dict(visible=False),
+                            xaxis_rangeslider_visible=False,
+                            height=200,
                         )
-                    ])
-
-                    fig.update_layout(
-                        margin=dict(l=10, r=10, t=10, b=10),
-                        xaxis=dict(visible=False),
-                        yaxis=dict(visible=False),
-                        xaxis_rangeslider_visible=False,
-                        height=200,
-                    )
     
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
-                    st.caption("（チャートデータなし）")
-            except Exception as e:
-                st.caption(f"（エラー: {e}）")
+                        st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.caption("（チャートデータなし）")
+                except Exception as e:
+                    st.caption(f"（エラー: {e}）")
 
-            # HTMLの閉じタグ（明示的に）
-            st.markdown("</div>", unsafe_allow_html=True)
+                # HTMLの閉じタグ（明示的に）
+                st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("""
 <hr>
