@@ -104,8 +104,8 @@ else:
                     yaxis=dict(visible=False),
                     xaxis_rangeslider_visible=False,
                     height=200,
-                    plot_bgcolor='#fafafa',  # チャート背景を薄いグレーに
-                    paper_bgcolor='#fafafa'
+                    plot_bgcolor='#f8f8f8',  # チャート背景を薄いグレーに
+                    paper_bgcolor='#f8f8f8'
                 )
                 st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False, "staticPlot": True})
             else:
