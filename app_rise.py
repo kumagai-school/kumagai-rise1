@@ -66,7 +66,7 @@ else:
         code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
         multiplier_html = f"<span style='color:green; font-weight:bold;'>{row['倍率']:.2f}倍</span>"
 
-        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown("<hr style='border-top: 2px solid #ccc;'>", unsafe_allow_html=True)
 
         st.markdown(f"""
             <div style='font-size:18px; line-height:1.6em;'>
@@ -104,16 +104,16 @@ else:
                     yaxis=dict(visible=False),
                     xaxis_rangeslider_visible=False,
                     height=200,
-                    plot_bgcolor='#f0f0f0',  # チャート背景を薄いグレーに
-                    paper_bgcolor='#f0f0f0'
+                    plot_bgcolor='#f5f5f5',  # チャート背景を薄いグレーに
+                    paper_bgcolor='#f5f5f5'
                 )
-                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False, "staticPlot": True})
             else:
                 st.caption("（チャートデータなし）")
         except Exception as e:
             st.caption(f"（エラー: {e}）")
 
-    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-top: 2px solid #ccc;'>", unsafe_allow_html=True)
 
 st.markdown("""
 <div style='
