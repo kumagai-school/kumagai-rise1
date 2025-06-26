@@ -37,7 +37,7 @@ def load_data(source):
         url_map = {
             "today": "https://app.kumagai-stock.com/api/highlow/today",
             "yesterday": "https://app.kumagai-stock.com/api/highlow/yesterday",
-            "target2day": "https://app.kumagai-stock.com/api/highlow/target2day"
+            "target2day": "https://app.kumagai-stock.com/api/highlow/target2day",
             "target3day": "https://app.kumagai-stock.com/api/highlow/target3day"
         }
         url = url_map.get(source, url_map["today"])
@@ -47,16 +47,23 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-# 表示対象選択
-option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値", "2日前高値", "3日前高値"], horizontal=True)
+# 表示対象選択（4つの選択肢に拡張）
+option = st.radio(
+    "表示対象を選んでください",
+    ["本日高値", "昨日高値", "一昨昨日高値", "3日前高値"],
+    horizontal=True
+)
+
+# 対応するデータソース名に変換
 data_source = {
     "本日高値": "today",
     "昨日高値": "yesterday",
-    "2日前高値": "target2day"
+    "一昨昨日高値": "target2day",
     "3日前高値": "target3day"
 }[option]
-df = load_data(data_source)
 
+# データ読込
+df = load_data(data_source)
 if df.empty:
     st.info("データがありません。")
 else:
