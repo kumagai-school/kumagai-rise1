@@ -113,6 +113,7 @@ data_source = {
 
 # データ読込
 df = load_data(data_source)
+
 if df.empty:
     st.info("データがありません。")
 else:
@@ -135,11 +136,11 @@ else:
                 📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
                 📈 高値 ： {row["high"]}（{row["high_date"]}）
             </div>
-            draw_chart(row["code"], row.get("name", ""))
-
             """,
             unsafe_allow_html=True
         )
+        # ✅ HTMLの下にチャートを表示（これはPythonコード！）
+        draw_chart(row["code"], name)
 
 st.markdown("""
 <hr>
