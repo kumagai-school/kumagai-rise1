@@ -50,7 +50,7 @@ def load_data(source):
 # 表示対象選択（4つの選択肢に拡張）
 option = st.radio(
     "表示対象を選んでください",
-    ["本日高値", "昨日高値", "一昨昨日高値", "3日前高値"],
+    ["本日高値", "昨日高値", "2日前高値", "3日前高値"],
     horizontal=True
 )
 
@@ -58,7 +58,7 @@ option = st.radio(
 data_source = {
     "本日高値": "today",
     "昨日高値": "yesterday",
-    "一昨昨日高値": "target2day",
+    "2日前高値": "target2day",
     "3日前高値": "target3day"
 }[option]
 
