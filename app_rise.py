@@ -48,54 +48,6 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-# チャート描画関数
-def draw_chart(code, name=""):
-    try:
-        candle_url = "https://app.kumagai-stock.com/api/candle"
-        resp = requests.get(candle_url, params={"code": code})
-        chart_data = resp.json().get("data", [])
-
-        if not chart_data:
-            st.warning(f"チャートデータが取得できませんでした（{code}）")
-            return
-
-        df = pd.DataFrame(chart_data)
-        df["date"] = pd.to_datetime(df["date"], errors="coerce")
-        df["date_str"] = df["date"].dt.strftime("%Y-%m-%d")
-        df["hovertext"] = (
-            "日付: " + df["date_str"] + "<br>" +
-            "始値: " + df["open"].astype(str) + "<br>" +
-            "高値: " + df["high"].astype(str) + "<br>" +
-            "安値: " + df["low"].astype(str) + "<br>" +
-            "終値: " + df["close"].astype(str)
-        )
-
-        fig = go.Figure(data=[
-            go.Candlestick(
-                x=df["date_str"],
-                open=df["open"],
-                high=df["high"],
-                low=df["low"],
-                close=df["close"],
-                increasing_line_color='red',
-                decreasing_line_color='blue',
-                hovertext=df["hovertext"],
-                hoverinfo="text"
-            )
-        ])
-
-        fig.update_layout(
-            title=f"{code} {name} のローソク足チャート（2週間）",
-            xaxis_title="日付",
-            yaxis_title="株価",
-            xaxis_rangeslider_visible=False,
-            xaxis=dict(type='category', tickangle=-45)
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    except Exception as e:
-        st.error(f"{code} チャート取得エラー: {e}")
-
-
 # 表示対象選択（4つの選択肢に拡張）
 option = st.radio(
     "表示対象を選んでください",
@@ -120,27 +72,65 @@ else:
     for _, row in df.iterrows():
         code_link = f'<a href="https://kabuka-check-app.onrender.com/?code={row["code"]}" target="_blank">{row["code"]}</a>'
         name = row.get("name", "")
-        st.markdown(
-            f"""
-            <div style='
-                border:1px solid #ccc;
-                border-radius:10px;
-                padding:10px;
-                margin-bottom:10px;
-                background:#f9f9f9;
-                font-size:20px;
-                line-height:1.6em;
-            '>
-                <b>{name}（{code_link}）</b>　
-                <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
-                📈 高値 ： {row["high"]}（{row["high_date"]}）
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-        # ✅ HTMLの下にチャートを表示（これはPythonコード！）
-        draw_chart(row["code"], name)
+        
+
+        with st.container():
+            st.markdown(
+                f"""
+                <div style='
+                    border:1px solid #ccc;
+                    border-radius:10px;
+                    padding:10px;
+                    margin-bottom:10px;
+                    background:#f9f9f9;
+                    font-size:20px;
+                    line-height:1.6em;
+                '>
+                    <b>{name}（{code_link}）</b>　
+                    <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
+                    📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
+                    📈 高値 ： {row["high"]}（{row["high_date"]}）
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+           # チャート（タイトル・ラベルなし、グレー枠の中に収まる）
+           try:
+               candle_url = "https://app.kumagai-stock.com/api/candle"
+               resp = requests.get(candle_url, params={"code": code})
+               chart_data = resp.json().get("data", [])
+
+               if chart_data:
+                   df_chart = pd.DataFrame(chart_data)
+                   df_chart["date"] = pd.to_datetime(df_chart["date"], errors="coerce")
+                   df_chart["date_str"] = df_chart["date"].dt.strftime("%Y-%m-%d")
+
+                   fig = go.Figure(data=[
+                       go.Candlestick(
+                           x=df_chart["date_str"],
+                           open=df_chart["open"],
+                           high=df_chart["high"],
+                           low=df_chart["low"],
+                           close=df_chart["close"],
+                           increasing_line_color='red',
+                           decreasing_line_color='blue',
+                           hoverinfo="skip"  # ホバーもなしにする場合
+                       )
+                   ])
+
+                   fig.update_layout(
+                       margin=dict(l=10, r=10, t=10, b=10),
+                       xaxis=dict(visible=False),
+                       yaxis=dict(visible=False),
+                       xaxis_rangeslider_visible=False,
+                       height=200,
+                   )
+
+                   st.plotly_chart(fig, use_container_width=True)
+               else:
+                   st.caption("（チャートデータなし）")
+        except Exception as e:
+               st.caption(f"（エラー: {e}）")
 
 st.markdown("""
 <hr>
