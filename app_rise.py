@@ -66,57 +66,54 @@ else:
         code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
         multiplier_html = f"<span style='color:green; font-weight:bold;'>{row['倍率']:.2f}倍</span>"
 
-        with st.expander(f"{name}（{code}）　{row['倍率']:.2f}倍", expanded=True):
-            st.markdown(f"<small><a href='{code_link}' target='_blank'>チャート詳細へ</a></small>", unsafe_allow_html=True)
-            st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
-            st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
+        st.markdown("<hr>", unsafe_allow_html=True)
 
-            try:
-                candle_url = "https://app.kumagai-stock.com/api/candle"
-                resp = requests.get(candle_url, params={"code": code})
-                chart_data = resp.json().get("data", [])
+        st.markdown(f"""
+            <div style='font-size:18px; line-height:1.6em;'>
+                <b><a href="{code_link}" target="_blank">{name}（{code}）</a></b>　
+                {multiplier_html}<br>
+                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
+                📈 高値 ： {row["high"]}（{row["high_date"]}）
+            </div>
+        """, unsafe_allow_html=True)
 
-                if chart_data:
-                    df_chart = pd.DataFrame(chart_data)
-                    df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
+        try:
+            candle_url = "https://app.kumagai-stock.com/api/candle"
+            resp = requests.get(candle_url, params={"code": code})
+            chart_data = resp.json().get("data", [])
 
-                    fig = go.Figure(data=[
-                        go.Candlestick(
-                            x=df_chart["date_str"],
-                            open=df_chart["open"],
-                            high=df_chart["high"],
-                            low=df_chart["low"],
-                            close=df_chart["close"],
-                            increasing_line_color='red',
-                            decreasing_line_color='blue',
-                            hoverinfo="skip"
-                        )
-                    ])
-                    fig.update_layout(
-                        margin=dict(l=10, r=10, t=10, b=10),
-                        xaxis=dict(visible=False, type="category"),
-                        yaxis=dict(visible=False),
-                        xaxis_rangeslider_visible=False,
-                        height=200,
-                        plot_bgcolor='white',
-                        paper_bgcolor='white'
+            if chart_data:
+                df_chart = pd.DataFrame(chart_data)
+                df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
+
+                fig = go.Figure(data=[
+                    go.Candlestick(
+                        x=df_chart["date_str"],
+                        open=df_chart["open"],
+                        high=df_chart["high"],
+                        low=df_chart["low"],
+                        close=df_chart["close"],
+                        increasing_line_color='red',
+                        decreasing_line_color='blue',
+                        hoverinfo="skip"
                     )
-                    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-                else:
-                    st.caption("（チャートデータなし）")
-            except Exception as e:
-                st.caption(f"（エラー: {e}）")
+                ])
+                fig.update_layout(
+                    margin=dict(l=10, r=10, t=10, b=10),
+                    xaxis=dict(visible=False, type="category"),
+                    yaxis=dict(visible=False),
+                    xaxis_rangeslider_visible=False,
+                    height=200,
+                    plot_bgcolor='#f0f0f0',  # チャート背景を薄いグレーに
+                    paper_bgcolor='#f0f0f0'
+                )
+                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+            else:
+                st.caption("（チャートデータなし）")
+        except Exception as e:
+            st.caption(f"（エラー: {e}）")
 
-st.markdown("<hr><h4>📍<strong>注意事項</strong></h4>", unsafe_allow_html=True)
-st.markdown("""
-<div style='color:red; font-size:13px;'>
-<ul>
-  <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
-  <li>平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
-  <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
-</ul>
-</div><hr>
-""", unsafe_allow_html=True)
+    st.markdown("<hr>", unsafe_allow_html=True)
 
 st.markdown("""
 <div style='
