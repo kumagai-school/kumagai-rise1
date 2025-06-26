@@ -14,7 +14,6 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
-# 警告
 st.markdown("""
 <div style='
     border: 1px solid red;
@@ -33,7 +32,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# データ取得
 def load_data(source):
     try:
         url_map = {
@@ -49,7 +47,6 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-# 選択肢
 option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値", "2日前高値", "3日前高値"], horizontal=True)
 data_source = {
     "本日高値": "today",
@@ -67,10 +64,10 @@ else:
         code = row["code"]
         name = row.get("name", "")
         code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
-       倍率 = f"<span style='color:green; font-weight:bold;'>{row['倍率']:.2f}倍</span>"
+        multiplier_html = f"<span style='color:green; font-weight:bold;'>{row['倍率']:.2f}倍</span>"
 
-        with st.expander(f"{name}（{code}）　{倍率}", expanded=True):
-            st.markdown(f"[チャート詳細へ]({code_link})", unsafe_allow_html=True)
+        with st.expander(f"{name}（{code}）　{row['倍率']:.2f}倍", expanded=True):
+            st.markdown(f"<small><a href='{code_link}' target='_blank'>チャート詳細へ</a></small>", unsafe_allow_html=True)
             st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
             st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
 
@@ -110,7 +107,6 @@ else:
             except Exception as e:
                 st.caption(f"（エラー: {e}）")
 
-# フッター
 st.markdown("<hr><h4>📍<strong>注意事項</strong></h4>", unsafe_allow_html=True)
 st.markdown("""
 <div style='color:red; font-size:13px;'>
