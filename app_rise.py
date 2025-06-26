@@ -14,6 +14,7 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
+# 警告表示
 st.markdown("""
 <div style='
     border: 1px solid red;
@@ -32,7 +33,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CSSの定義（薄いグレーのボックス）
+# CSS定義
 st.markdown("""
     <style>
     .gray-box {
@@ -45,7 +46,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# データ取得関数
+# データ取得
 def load_data(source):
     try:
         url_map = {
@@ -61,13 +62,8 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-# 表示対象選択
-option = st.radio(
-    "表示対象を選んでください",
-    ["本日高値", "昨日高値", "2日前高値", "3日前高値"],
-    horizontal=True
-)
-
+# 選択肢
+option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値", "2日前高値", "3日前高値"], horizontal=True)
 data_source = {
     "本日高値": "today",
     "昨日高値": "yesterday",
@@ -131,6 +127,7 @@ else:
 
             st.markdown("</div>", unsafe_allow_html=True)
 
+# フッター
 st.markdown("""
 <hr>
 <h4>📍<strong>注意事項</strong></h4>
