@@ -71,68 +71,67 @@ if df.empty:
 else:
     for _, row in df.iterrows():
         code = row["code"]
-        code_link = f'<a href="https://kabuka-check-app.onrender.com/?code={code}" target="_blank">{code}</a>'
         name = row.get("name", "")
+        code_link = f'<a href="https://kabuka-check-app.onrender.com/?code={code}" target="_blank">{code}</a>'
 
         with st.container():
-            st.markdown(
+            # グレーの背景と枠線をStreamlitのlayoutで構成
+            with st.markdown(
                 f"""
                 <div style='
                     border:1px solid #ccc;
                     border-radius:10px;
-                    padding:10px;
+                    padding:15px;
                     margin-bottom:20px;
                     background:#f9f9f9;
                     font-size:18px;
                     line-height:1.6em;
                 '>
-                    <b>{name}（{code_link}）</b>　
-                    <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                    📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
-                    📈 高値 ： {row["high"]}（{row["high_date"]}）
-                </div>
+                <b>{name}（{code_link}）</b>　
+                <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
+                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
+                📈 高値 ： {row["high"]}（{row["high_date"]}）<br>
                 """,
                 unsafe_allow_html=True
-            )
+            ):
+                try:
+                    candle_url = "https://app.kumagai-stock.com/api/candle"
+                    resp = requests.get(candle_url, params={"code": code})
+                    chart_data = resp.json().get("data", [])
 
-            try:
-                candle_url = "https://app.kumagai-stock.com/api/candle"
-                resp = requests.get(candle_url, params={"code": code})
-                chart_data = resp.json().get("data", [])
+                    if chart_data:
+                        df_chart = pd.DataFrame(chart_data)
+                        df_chart["date"] = pd.to_datetime(df_chart["date"], errors="coerce")
+                        df_chart["date_str"] = df_chart["date"].dt.strftime("%Y-%m-%d")
 
-                if chart_data:
-                    df_chart = pd.DataFrame(chart_data)
-                    df_chart["date"] = pd.to_datetime(df_chart["date"], errors="coerce")
-                    df_chart["date_str"] = df_chart["date"].dt.strftime("%Y-%m-%d")
+                        fig = go.Figure(data=[
+                            go.Candlestick(
+                                x=df_chart["date_str"],
+                                open=df_chart["open"],
+                                high=df_chart["high"],
+                                low=df_chart["low"],
+                                close=df_chart["close"],
+                                increasing_line_color='red',
+                                decreasing_line_color='blue',
+                                hoverinfo="skip"
+                            )
+                        ])
 
-                    fig = go.Figure(data=[
-                        go.Candlestick(
-                            x=df_chart["date_str"],
-                            open=df_chart["open"],
-                            high=df_chart["high"],
-                            low=df_chart["low"],
-                            close=df_chart["close"],
-                            increasing_line_color='red',
-                            decreasing_line_color='blue',
-                            hoverinfo="skip"
+                        fig.update_layout(
+                            margin=dict(l=10, r=10, t=10, b=10),
+                            xaxis=dict(visible=False),
+                            yaxis=dict(visible=False),
+                            xaxis_rangeslider_visible=False,
+                            height=200,
                         )
-                    ])
 
-                    fig.update_layout(
-                        margin=dict(l=10, r=10, t=10, b=10),
-                        xaxis=dict(visible=False),
-                        yaxis=dict(visible=False),
-                        xaxis_rangeslider_visible=False,
-                        height=200,
-                    )
+                        st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.caption("（チャートデータなし）")
+                except Exception as e:
+                    st.caption(f"（エラー: {e}）")
 
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
-                    st.caption("（チャートデータなし）")
-
-            except Exception as e:
-                st.caption(f"（エラー: {e}）")
-
+            # HTMLの枠閉じタグ（絶対にst.plotly_chartの後にしないこと）
             st.markdown("</div>", unsafe_allow_html=True)
 
 
