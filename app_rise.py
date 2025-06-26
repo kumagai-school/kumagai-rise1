@@ -135,7 +135,6 @@ else:
                 📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
                 📈 高値 ： {row["high"]}（{row["high_date"]}）
             </div>
-            # 🔽 チャートを高値の「下」に表示
             draw_chart(row["code"], row.get("name", ""))
 
             """,
