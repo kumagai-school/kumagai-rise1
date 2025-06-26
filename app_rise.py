@@ -79,11 +79,11 @@ else:
             st.markdown(
                 """
                 <style>
-                .stock-box {
+                .gray-block {
                     background-color: #f9f9f9;
+                    padding: 20px;
                     border: 1px solid #ccc;
                     border-radius: 10px;
-                    padding: 15px;
                     margin-bottom: 30px;
                 }
                 </style>
@@ -92,10 +92,16 @@ else:
             )
             st.markdown('<div class="gray-box">', unsafe_allow_html=True)
 
-            # テキスト情報
-            st.write(f"**{name}（{code_link}）　{row['倍率']:.2f}倍**")
-            st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
-            st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
+            # テキスト表示
+            st.markdown(
+                f"""
+                <b>{name}（{code_link}）</b>　
+                <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
+                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
+                📈 高値 ： {row["high"]}（{row["high_date"]}）
+                """,
+                unsafe_allow_html=True
+            )
 
             # チャートを同一枠内に描画
             try:
