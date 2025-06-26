@@ -34,7 +34,12 @@ st.markdown("""
 # データ取得関数
 def load_data(source):
     try:
-        url = "https://app.kumagai-stock.com/api/highlow/today" if source == "today" else "https://app.kumagai-stock.com/api/highlow/yesterday"
+        url_map = {
+            "today": "https://app.kumagai-stock.com/api/highlow/today",
+            "yesterday": "https://app.kumagai-stock.com/api/highlow/yesterday",
+            "target2day": "https://app.kumagai-stock.com/api/highlow/target2day"
+        }
+        url = url_map.get(source, url_map["today"])
         res = requests.get(url, timeout=10)
         res.raise_for_status()
         return pd.DataFrame(res.json())
@@ -42,8 +47,12 @@ def load_data(source):
         return pd.DataFrame()
 
 # 表示対象選択
-option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値"], horizontal=True)
-data_source = "today" if option == "本日高値" else "yesterday"
+option = st.radio("表示対象を選んでください", ["本日高値", "昨日高値", "２日前高値"], horizontal=True)
+data_source = {
+    "本日高値": "today",
+    "昨日高値": "yesterday",
+    "２日前高値": "target2day"
+}[option]
 df = load_data(data_source)
 
 if df.empty:
