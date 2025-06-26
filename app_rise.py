@@ -14,7 +14,7 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
-# 警告表示
+# 警告
 st.markdown("""
 <div style='
     border: 1px solid red;
@@ -31,19 +31,6 @@ st.markdown("""
 <p>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
 <p>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
 </div>
-""", unsafe_allow_html=True)
-
-# CSS定義
-st.markdown("""
-    <style>
-    .gray-box {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        margin-bottom: 30px;
-    }
-    </style>
 """, unsafe_allow_html=True)
 
 # データ取得
@@ -80,14 +67,10 @@ else:
         code = row["code"]
         name = row.get("name", "")
         code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
+       倍率 = f"<span style='color:green; font-weight:bold;'>{row['倍率']:.2f}倍</span>"
 
-        with st.container():
-            st.markdown(f"<div class='gray-box'>", unsafe_allow_html=True)
-
-            st.markdown(
-                f"<h4 style='margin-bottom:8px;'>{name}（<a href='{code_link}' target='_blank'>{code}</a>）　{row['倍率']:.2f}倍</h4>",
-                unsafe_allow_html=True
-            )
+        with st.expander(f"{name}（{code}）　{倍率}", expanded=True):
+            st.markdown(f"[チャート詳細へ]({code_link})", unsafe_allow_html=True)
             st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
             st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
 
@@ -118,6 +101,8 @@ else:
                         yaxis=dict(visible=False),
                         xaxis_rangeslider_visible=False,
                         height=200,
+                        plot_bgcolor='white',
+                        paper_bgcolor='white'
                     )
                     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
                 else:
@@ -125,20 +110,16 @@ else:
             except Exception as e:
                 st.caption(f"（エラー: {e}）")
 
-            st.markdown("</div>", unsafe_allow_html=True)
-
 # フッター
+st.markdown("<hr><h4>📍<strong>注意事項</strong></h4>", unsafe_allow_html=True)
 st.markdown("""
-<hr>
-<h4>📍<strong>注意事項</strong></h4>
 <div style='color:red; font-size:13px;'>
 <ul>
   <li>ETFなど「ルール１」対象外の銘柄も表示されます。</li>
   <li>平日8時30分〜9時に10分程度のメンテナンスが入ることがあります。</li>
   <li>「本日の抽出結果」はおおよそ1時間ごとの更新となります。</li>
 </ul>
-</div>
-<hr>
+</div><hr>
 """, unsafe_allow_html=True)
 
 st.markdown("""
