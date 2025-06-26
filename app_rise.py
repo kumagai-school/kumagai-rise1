@@ -32,6 +32,19 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# CSSの定義（薄いグレーのボックス）
+st.markdown("""
+    <style>
+    .gray-box {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # データ取得関数
 def load_data(source):
     try:
@@ -48,14 +61,13 @@ def load_data(source):
     except:
         return pd.DataFrame()
 
-# 表示対象選択（4つの選択肢に拡張）
+# 表示対象選択
 option = st.radio(
     "表示対象を選んでください",
     ["本日高値", "昨日高値", "2日前高値", "3日前高値"],
     horizontal=True
 )
 
-# 対応するデータソース名に変換
 data_source = {
     "本日高値": "today",
     "昨日高値": "yesterday",
@@ -63,7 +75,6 @@ data_source = {
     "3日前高値": "target3day"
 }[option]
 
-# データ読込
 df = load_data(data_source)
 
 if df.empty:
@@ -72,50 +83,53 @@ else:
     for _, row in df.iterrows():
         code = row["code"]
         name = row.get("name", "")
-        code_link = f"[{code}](https://kabuka-check-app.onrender.com/?code={code})"
+        code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
 
         with st.container():
-            # ボックス風に見せる方法：カラム＋空行＋背景色風のブロック
-            with st.expander(f"{name}（{code}）　{row['倍率']:.2f}倍", expanded=True):
-                st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
-                st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
+            st.markdown(f"<div class='gray-box'>", unsafe_allow_html=True)
 
-                try:
-                    candle_url = "https://app.kumagai-stock.com/api/candle"
-                    resp = requests.get(candle_url, params={"code": code})
-                    chart_data = resp.json().get("data", [])
+            st.markdown(
+                f"<h4 style='margin-bottom:8px;'>{name}（<a href='{code_link}' target='_blank'>{code}</a>）　{row['倍率']:.2f}倍</h4>",
+                unsafe_allow_html=True
+            )
+            st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
+            st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
 
-                    if chart_data:
-                        df_chart = pd.DataFrame(chart_data)
-                        df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
+            try:
+                candle_url = "https://app.kumagai-stock.com/api/candle"
+                resp = requests.get(candle_url, params={"code": code})
+                chart_data = resp.json().get("data", [])
 
-                        fig = go.Figure(data=[
-                            go.Candlestick(
-                                x=df_chart["date_str"],
-                                open=df_chart["open"],
-                                high=df_chart["high"],
-                                low=df_chart["low"],
-                                close=df_chart["close"],
-                                increasing_line_color='red',
-                                decreasing_line_color='blue',
-                                hoverinfo="skip"
-                            )
-                        ])
-                        fig.update_layout(
-                            margin=dict(l=10, r=10, t=10, b=10),
-                            xaxis=dict(visible=False),
-                            yaxis=dict(visible=False),
-                            xaxis_rangeslider_visible=False,
-                            height=200,
+                if chart_data:
+                    df_chart = pd.DataFrame(chart_data)
+                    df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
+
+                    fig = go.Figure(data=[
+                        go.Candlestick(
+                            x=df_chart["date_str"],
+                            open=df_chart["open"],
+                            high=df_chart["high"],
+                            low=df_chart["low"],
+                            close=df_chart["close"],
+                            increasing_line_color='red',
+                            decreasing_line_color='blue',
+                            hoverinfo="skip"
                         )
+                    ])
+                    fig.update_layout(
+                        margin=dict(l=10, r=10, t=10, b=10),
+                        xaxis=dict(visible=False, type="category"),
+                        yaxis=dict(visible=False),
+                        xaxis_rangeslider_visible=False,
+                        height=200,
+                    )
+                    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+                else:
+                    st.caption("（チャートデータなし）")
+            except Exception as e:
+                st.caption(f"（エラー: {e}）")
 
-                        # ✅ チャートはexpander内で枠内表示される
-                        st.plotly_chart(fig, use_container_width=True)
-                    else:
-                        st.caption("（チャートデータなし）")
-                except Exception as e:
-                    st.caption(f"（エラー: {e}）")    
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("""
 <hr>
