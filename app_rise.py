@@ -69,41 +69,17 @@ df = load_data(data_source)
 if df.empty:
     st.info("データがありません。")
 else:
-    for _, row in df.iterrows():
-        code = row["code"]
-        name = row.get("name", "")
-        code_link = f"[{code}](https://kabuka-check-app.onrender.com/?code={code})"
+for _, row in df.iterrows():
+    code = row["code"]
+    name = row.get("name", "")
+    code_link = f"[{code}](https://kabuka-check-app.onrender.com/?code={code})"
 
-        with st.container():
-            # 全体を囲うboxスタイル
-            st.markdown(
-                """
-                <style>
-                .gray-block {
-                    background-color: #f9f9f9;
-                    padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 10px;
-                    margin-bottom: 30px;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True
-            )
-            st.markdown('<div class="gray-box">', unsafe_allow_html=True)
+    with st.container():
+        # ボックス風に見せる方法：カラム＋空行＋背景色風のブロック
+        with st.expander(f"{name}（{code}）　{row['倍率']:.2f}倍", expanded=True):
+            st.write(f"📉 安値 ： {row['low']}（{row['low_date']}）")
+            st.write(f"📈 高値 ： {row['high']}（{row['high_date']}）")
 
-            # テキスト表示
-            st.markdown(
-                f"""
-                <b>{name}（{code_link}）</b>　
-                <span style='color:#006400; font-weight:bold;'>{row["倍率"]:.2f}倍</span><br>
-                📉 安値 ： {row["low"]}（{row["low_date"]}）<br>
-                📈 高値 ： {row["high"]}（{row["high_date"]}）
-                """,
-                unsafe_allow_html=True
-            )
-
-            # チャートを同一枠内に描画
             try:
                 candle_url = "https://app.kumagai-stock.com/api/candle"
                 resp = requests.get(candle_url, params={"code": code})
@@ -132,12 +108,13 @@ else:
                         xaxis_rangeslider_visible=False,
                         height=200,
                     )
+
+                    # ✅ チャートはexpander内で枠内表示される
                     st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.caption("（チャートデータなし）")
             except Exception as e:
-                st.caption(f"（エラー: {e}）")
-    
+                st.caption(f"（エラー: {e}）")    
             st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("""
