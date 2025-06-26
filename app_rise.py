@@ -133,6 +133,8 @@ else:
             except Exception as e:
                 st.caption(f"（エラー: {e}）")
 
+            st.markdown("</div>", unsafe_allow_html=True)
+
 
 st.markdown("""
 <hr>
