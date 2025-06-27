@@ -57,7 +57,7 @@ data_source = {
     "2日前": "target2day",
     "3日前": "target3day",
     "4日前": "target4day",
-    "5日前": "target4day"
+    "5日前": "target5day"
 }[option]
 
 df = load_data(data_source)
