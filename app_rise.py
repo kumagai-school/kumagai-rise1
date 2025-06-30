@@ -14,21 +14,6 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div style='
-    background-color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #000000;
-    margin-bottom: 20px;
-    line-height: 1.6em;
-'>
-<p>銘柄名をクリックすると、「直近高値」「高値から過去2週間以内の安値」が表示されます。<br>
-画面下の「計算する」をクリックすると、「上昇率」「上げ幅」「上げ幅の半値」「上げ幅の半値押し」が算出されます。<br>
-銘柄選別でご活用下さいませ。</p>
-</div>
-""", unsafe_allow_html=True)
 
 st.markdown("""
 <div style='
@@ -75,6 +60,22 @@ data_source = {
     "4日前": "target4day",
     "5日前": "target5day"
 }[option]
+
+st.markdown("""
+<div style='
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #000000;
+    margin-bottom: 20px;
+    line-height: 1.6em;
+'>
+<p>銘柄名をクリックすると、「直近高値」「高値から過去2週間以内の安値」が表示されます。<br>
+画面下の「計算する」をクリックすると、「上昇率」「上げ幅」「上げ幅の半値」「上げ幅の半値押し」が算出されます。<br>
+銘柄選別でご活用下さいませ。</p>
+</div>
+""", unsafe_allow_html=True)
 
 df = load_data(data_source)
 
