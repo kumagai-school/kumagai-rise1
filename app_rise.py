@@ -14,6 +14,21 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<div style='
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #000000;
+    margin-bottom: 20px;
+    line-height: 1.6em;
+'>
+<p>銘柄名をクリックすると、「直近高値」「高値から過去2週間以内の安値」が表示されます。<br>
+表示された画面下の「計算する」をクリックすると、「上昇率」「上げ幅」「上げ幅の半値」「上げ幅の半値押し」が算出されます。<br>
+銘柄選別でご活用下さいませ。</p>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 <div style='
@@ -26,11 +41,11 @@ st.markdown("""
     margin-bottom: 20px;
     line-height: 1.3em;
 '>
-<p>⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
-<p>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。</p>
-<p>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
-<p>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
-<p>⚠️ 表示されるチャートは昨日までの日足チャートです。</p>
+<p style='margin: 4px 0;'>⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
+<p style='margin: 4px 0;'>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。</p>
+<p style='margin: 4px 0;'>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
+<p style='margin: 4px 0;'>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
+<p style='margin: 4px 0;'>⚠️ 表示されるチャートは昨日までの日足チャートです。</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -60,22 +75,6 @@ data_source = {
     "4日前": "target4day",
     "5日前": "target5day"
 }[option]
-
-st.markdown("""
-<div style='
-    background-color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #000000;
-    margin-bottom: 20px;
-    line-height: 1.6em;
-'>
-<p>銘柄名をクリックすると、「直近高値」「高値から過去2週間以内の安値」が表示されます。<br>
-画面下の「計算する」をクリックすると、「上昇率」「上げ幅」「上げ幅の半値」「上げ幅の半値押し」が算出されます。<br>
-銘柄選別でご活用下さいませ。</p>
-</div>
-""", unsafe_allow_html=True)
 
 df = load_data(data_source)
 
