@@ -24,7 +24,7 @@ st.markdown("""
     font-size: 13px;
     color: #b30000;
     margin-bottom: 20px;
-    line-height: 1.6em;
+    line-height: 1.3em;
 '>
 <p>⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
 <p>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。</p>
