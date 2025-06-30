@@ -10,7 +10,12 @@ st.markdown("""
         『ルール1』<br>スクリーニングアプリ
     </h1>
     <h1 style='text-align:left; color:#000000; font-size:15px; line-height:1.4em;'>
-        単純に「2週間以内で1.3-2倍に暴騰した銘柄」を抽出しています
+        「2週間以内で1.3～2倍に暴騰した銘柄」を抽出しています。
+
+         銘柄名をクリックすると、「直近高値」「高値から過去2週間以内の安値」が表示されます。
+         画面下の「計算する」をクリックすると、「上昇率」「上げ幅」「上げ幅の半値」「上げ幅の半値押し」が算出されます。
+         銘柄選別でご活用下さいませ。
+
     </h1>
 """, unsafe_allow_html=True)
 
@@ -119,6 +124,24 @@ else:
             st.caption(f"（エラー: {e}）")
 
     st.markdown("<hr style='border-top: 2px solid #ccc;'>", unsafe_allow_html=True)
+
+st.markdown("""
+<div style='
+    border: 1px solid red;
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #b30000;
+    margin-bottom: 20px;
+    line-height: 1.6em;
+'>
+<p>※ピックアップチャートの銘柄については、あくまで「ルール1」銘柄のレッスンとなります。</p>
+<p>※特定の取引を推奨するものではなく、銘柄の助言ではございません。</p>
+<p>※本サービスは利益を保証するものではなく、投資にはリスクが伴います。投資の際は自己責任でよろしくお願いいたします。</p>
+</div>
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <div style='
