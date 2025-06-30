@@ -41,11 +41,11 @@ st.markdown("""
     margin-bottom: 20px;
     line-height: 1.3em;
 '>
-<p style='margin: 4px 0;'>⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
-<p style='margin: 4px 0;'>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。</p>
-<p style='margin: 4px 0;'>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
-<p style='margin: 4px 0;'>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
-<p style='margin: 4px 0;'>⚠️ 表示されるチャートは昨日までの日足チャートです。</p>
+<p style='margin: 6px 0;'>⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
+<p style='margin: 6px 0;'>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。</p>
+<p style='margin: 6px 0;'>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
+<p style='margin: 6px 0;'>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
+<p style='margin: 6px 0;'>⚠️ 表示されるチャートは昨日までの日足チャートです。</p>
 </div>
 """, unsafe_allow_html=True)
 
