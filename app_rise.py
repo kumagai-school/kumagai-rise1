@@ -3,7 +3,6 @@ import pandas as pd
 import requests
 import plotly.graph_objects as go
 
-# 簡易パスワード
 PASSWORD = "0123"
 
 if "authenticated" not in st.session_state:
@@ -13,7 +12,7 @@ if not st.session_state["authenticated"]:
     pwd = st.text_input("🔐 パスワードを入力してください", type="password")
     if pwd == PASSWORD:
         st.session_state["authenticated"] = True
-        st.experimental_rerun()
+        st.rerun()  # ← こちらに変更！
     elif pwd:
         st.error("パスワードが違います。")
     st.stop()
