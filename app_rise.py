@@ -3,16 +3,17 @@ import pandas as pd
 import requests
 import plotly.graph_objects as go
 
-PASSWORD = "0123"
+# ✅ 許可するパスワードを複数指定（リスト形式）
+VALID_PASSWORDS = ["kuma", "0123"]
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 if not st.session_state["authenticated"]:
     pwd = st.text_input("🔐 パスワードを入力してください", type="password")
-    if pwd == PASSWORD:
+    if pwd in VALID_PASSWORDS:
         st.session_state["authenticated"] = True
-        st.rerun()  # ← こちらに変更！
+        st.rerun()  # ← 再描画して中身を表示
     elif pwd:
         st.error("パスワードが違います。")
     st.stop()
