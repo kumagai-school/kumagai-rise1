@@ -61,6 +61,7 @@ st.markdown("""
 <p style='margin: 6px 0;'>⚠️ 「本日の抽出結果」は約1時間ごとに更新されます。</p>
 <p style='margin: 6px 0;'>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
 <p style='margin: 6px 0;'>⚠️ 表示されるチャートは昨日までの日足チャートです。</p>
+<p style='margin: 6px 0;'>⚠️株式分割や株式併合などがあった場合、過去の株価は分割・併合を考慮しておりません。</p>
 </div>
 """, unsafe_allow_html=True)
 
