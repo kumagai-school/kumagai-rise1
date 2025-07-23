@@ -22,7 +22,10 @@ st.set_page_config(page_title="スクリーニング", layout="wide")
 
 st.markdown("""
     <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
-        『ルール1』<br>スクリーニングアプリ
+        Rシステム-2-
+    </h1>
+    <h1 style='text-align:left; color:#2E86C1; font-size:20px; line-height:1.4em;'>
+        『ルール1』スクリーニングシステム
     </h1>
     <h1 style='text-align:left; color:#000000; font-size:15px; line-height:1.4em;'>
         「2週間以内で1.3～2倍に暴騰した銘柄」を抽出しています。
@@ -93,6 +96,12 @@ data_source = {
 }[option]
 
 df = load_data(data_source)
+
+# 🔽 除外したい銘柄コードを指定
+exclude_codes = {"9501", "9432", "7203"}  # 必要に応じて追加
+
+# 🔽 除外処理（コードが含まれていない行のみ残す）
+df = df[~df["code"].isin(exclude_codes)]
 
 if df.empty:
     st.info("データがありません。")
