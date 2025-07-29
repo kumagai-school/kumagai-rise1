@@ -18,7 +18,7 @@ if not st.session_state["authenticated"]:
         st.error("パスワードが違います。")
     st.stop()
 
-st.set_page_config(page_title="スクリーニング", layout="wide")
+st.set_page_config(page_title="RシステムPRO", layout="wide")
 
 st.markdown("""
     <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
