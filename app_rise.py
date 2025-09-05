@@ -76,6 +76,8 @@ st.markdown("""
     </h1>
     <h1 style='text-align:left; color:#2E86C1; font-size:20px; line-height:1.4em;'>
         『ルール1』スクリーニングシステム
+    </h1>
+""", unsafe_allow_html=True)
 
 
 def load_data(source):
