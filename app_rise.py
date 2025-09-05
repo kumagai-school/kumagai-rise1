@@ -68,6 +68,16 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.set_page_config(page_title="RシステムPRO", layout="wide")
+
+st.markdown("""
+    <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
+        ＲシステムPRO
+    </h1>
+    <h1 style='text-align:left; color:#2E86C1; font-size:20px; line-height:1.4em;'>
+        『ルール1』スクリーニングシステム
+
+
 def load_data(source):
     try:
         url_map = {
