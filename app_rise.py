@@ -140,15 +140,31 @@ else:
         """, unsafe_allow_html=True)
 
         # -------------------------------------------------------------
-        # 修正点: 詳細リンクボタンの追加
+        # 修正点: st.link_buttonをカスタムHTMLリンクに置き換え、サイズを調整
         # -------------------------------------------------------------
-        # リンクボタンを設置
-        st.link_button(
-            label=f"詳細・半値押し計算へ)",
-            url=code_link,
-            help="別ページで詳細な計算結果とチャートを確認します。",
-            # type="primary" を削除して、デフォルトの薄いグレー（Secondary）を使用
-        )
+        # カスタムリンクボタンを設置
+        # paddingとfont-sizeを小さくすることで、ボタンを極小化
+        button_html = f"""
+            <a href="{code_link}" target="_blank" style="
+                display: inline-block;
+                padding: 4px 8px; /* パディングを大幅に縮小 */
+                margin-top: 5px;
+                background-color: #f0f2f6; /* StreamlitのSecondaryに近い薄いグレー */
+                color: #4b4b4b; /* テキストカラー */
+                border: 1px solid #d3d3d3; /* 境界線 */
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: 13px; /* フォントサイズを小さく */
+                font-weight: normal;
+                line-height: 1.2;
+                white-space: nowrap; /* テキストの折り返しを防ぐ */
+                transition: background-color 0.1s;
+            " onmouseover="this.style.backgroundColor='#e8e8e8'" onmouseout="this.style.backgroundColor='#f0f2f6'"
+            title="別ページで詳細な計算結果とチャートを確認します。">
+                詳細・半値押し計算へ)
+            </a>
+        """
+        st.markdown(button_html, unsafe_allow_html=True)
 
         try:
             candle_url = "https://app.kumagai-stock.com/api/candle"
