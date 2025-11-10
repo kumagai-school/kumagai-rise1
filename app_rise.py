@@ -69,7 +69,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+# -------------------------------------------------------------
+# 🌟 【改善点１】 st.cache_data を適用
+# ttl=1800 (1800秒 = 30分) に設定し、APIの更新頻度と合わせることで、
+# 再描画時の不要なAPI呼び出しを防ぎ、パフォーマンスを向上させます。
+# -------------------------------------------------------------
+
+@st.cache_data(ttl=18000) 
 def load_data(source):
+    """
+    指定されたソースから株価データを取得します。
+    """
+    st.info(f"データをAPIから取得中...（ソース: {source}）") # 取得時のみ表示
     try:
         url_map = {
             "today": "https://app.kumagai-stock.com/api/highlow/today",
@@ -82,8 +93,16 @@ def load_data(source):
         url = url_map.get(source, url_map["today"])
         res = requests.get(url, timeout=10)
         res.raise_for_status()
-        return pd.DataFrame(res.json())
-    except:
+        # データの型を明示的に変換（high, lowなどが数値であることを保証）
+        df = pd.DataFrame(res.json())
+        if not df.empty:
+            for col in ["high", "low"]:
+                if col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
+            df.dropna(subset=["high", "low"], inplace=True)
+        return df
+    except Exception as e:
+        st.error(f"データの読み込み中にエラーが発生しました: {e}")
         return pd.DataFrame()
 
 option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前", "4日前", "5日前"], horizontal=True)
