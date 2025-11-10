@@ -161,7 +161,7 @@ else:
                 transition: background-color 0.1s;
             " onmouseover="this.style.backgroundColor='#e8e8e8'" onmouseout="this.style.backgroundColor='#f0f2f6'"
             title="別ページで詳細な計算結果とチャートを確認します。">
-                詳細・半値押し計算へ)
+                詳細・半値押し計算へ
             </a>
         """
         st.markdown(button_html, unsafe_allow_html=True)
