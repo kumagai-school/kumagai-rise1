@@ -151,7 +151,7 @@ else:
         code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
         
         # リンク先：決算・企業情報（株探）
-        kabutan_finance_url = f"https://kabutan.jp/stock/?code={code}"
+        kabutan_finance_url = f"https://kabutan.jp/stock/finance?code={code}"
         
         # リンク先：ニュース（株探）
         kabutan_news_url = f"https://kabutan.jp/stock/news?code={code}"
