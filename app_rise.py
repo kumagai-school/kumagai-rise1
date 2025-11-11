@@ -69,13 +69,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# -------------------------------------------------------------
-# 🌟 【改善点１】 st.cache_data を適用
-# ttl=1800 (1800秒 = 30分) に設定し、APIの更新頻度と合わせることで、
-# 再描画時の不要なAPI呼び出しを防ぎ、パフォーマンスを向上させます。
-# -------------------------------------------------------------
-
-@st.cache_data(ttl=1800) 
 def load_data(source):
     try:
         url_map = {
@@ -89,16 +82,8 @@ def load_data(source):
         url = url_map.get(source, url_map["today"])
         res = requests.get(url, timeout=10)
         res.raise_for_status()
-        # データの型を明示的に変換（high, lowなどが数値であることを保証）
-        df = pd.DataFrame(res.json())
-        if not df.empty:
-            for col in ["high", "low"]:
-                if col in df.columns:
-                    df[col] = pd.to_numeric(df[col], errors='coerce')
-            df.dropna(subset=["high", "low"], inplace=True)
-        return df
-    except Exception as e:
-        st.error(f"データの読み込み中にエラーが発生しました: {e}")
+        return pd.DataFrame(res.json())
+    except:
         return pd.DataFrame()
 
 option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前", "4日前", "5日前"], horizontal=True)
@@ -139,33 +124,6 @@ else:
             </div>
         """, unsafe_allow_html=True)
 
-        # -------------------------------------------------------------
-        # 修正点: st.link_buttonをカスタムHTMLリンクに置き換え、サイズを調整
-        # -------------------------------------------------------------
-        # カスタムリンクボタンを設置
-        # paddingとfont-sizeを小さくすることで、ボタンを極小化
-        button_html = f"""
-            <a href="{code_link}" target="_blank" style="
-                display: inline-block;
-                padding: 4px 8px; /* パディングを大幅に縮小 */
-                margin-top: 5px;
-                background-color: #f0f2f6; /* StreamlitのSecondaryに近い薄いグレー */
-                color: #4b4b4b; /* テキストカラー */
-                border: 1px solid #d3d3d3; /* 境界線 */
-                border-radius: 5px;
-                text-decoration: none;
-                font-size: 13px; /* フォントサイズを小さく */
-                font-weight: normal;
-                line-height: 1.2;
-                white-space: nowrap; /* テキストの折り返しを防ぐ */
-                transition: background-color 0.1s;
-            " onmouseover="this.style.backgroundColor='#e8e8e8'" onmouseout="this.style.backgroundColor='#f0f2f6'"
-            title="別ページで詳細な計算結果とチャートを確認します。">
-                詳細・半値押し計算へ
-            </a>
-        """
-        st.markdown(button_html, unsafe_allow_html=True)
-
         try:
             candle_url = "https://app.kumagai-stock.com/api/candle"
             resp = requests.get(candle_url, params={"code": code})
@@ -196,7 +154,7 @@ else:
                     plot_bgcolor='#f8f8f8',  # チャート背景を薄いグレーに
                     paper_bgcolor='#f8f8f8'
                 )
-                st.plotly_chart(fig, width='stretch', config={"displayModeBar": False, "staticPlot": True})
+                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False, "staticPlot": True})
             else:
                 st.caption("（チャートデータなし）")
         except Exception as e:
