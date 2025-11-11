@@ -153,57 +153,31 @@ else:
         """, unsafe_allow_html=True)
 
         # -------------------------------------------------------------
-        # 🌟 修正点：ニュース（株探）ボタンを追加し、3つのボタンを統一スタイルで配置
+        # 修正点: st.link_buttonをカスタムHTMLリンクに置き換え、サイズを調整
         # -------------------------------------------------------------
-        
-        # 1. 詳細・半値押し計算へ のボタン
-        # スタイルを定義（共通スタイル）
-        button_style = """
-            display: inline-block;
-            padding: 3px 7px; 
-            margin-top: 4px;
-            background-color: #f0f2f6; 
-            color: #4b4b4b; 
-            border: 1px solid #d3d3d3; 
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 11px; 
-            font-weight: normal;
-            line-height: 1.2;
-            white-space: nowrap; 
-            transition: background-color 0.1s;
-        """
-        
-        # ホバー時のアクション（共通）
-        hover_attr = 'onmouseover="this.style.backgroundColor=\'#e8e8e8\'" onmouseout="this.style.backgroundColor=\'#f0f2f6\'"'
-
-        detail_button_html = f"""
-            <a href="{code_link}" target="_blank" style="{button_style}" {hover_attr}
+        # カスタムリンクボタンを設置
+        # paddingとfont-sizeを小さくすることで、ボタンを極小化
+        button_html = f"""
+            <a href="{code_link}" target="_blank" style="
+                display: inline-block;
+                padding: 3px 7px; /* パディングを大幅に縮小 */
+                margin-top: 4px;
+                background-color: #f0f2f6; /* StreamlitのSecondaryに近い薄いグレー */
+                color: #4b4b4b; /* テキストカラー */
+                border: 1px solid #d3d3d3; /* 境界線 */
+                border-radius: 4px;
+                text-decoration: none;
+                font-size: 11px; /* フォントサイズを小さく */
+                font-weight: normal;
+                line-height: 1.2;
+                white-space: nowrap; /* テキストの折り返しを防ぐ */
+                transition: background-color 0.1s;
+            " onmouseover="this.style.backgroundColor='#e8e8e8'" onmouseout="this.style.backgroundColor='#f0f2f6'"
             title="別ページで詳細な計算結果とチャートを確認します。">
                 詳細・半値押し計算へ
             </a>
         """
-        
-        # 2. 決算・企業情報（株探） のボタン
-        # 共通スタイルに左マージンのみ追加
-        kabutan_finance_button_html = f"""
-            <a href="{kabutan_finance_url}" target="_blank" style="{button_style} margin-left: 10px;" {hover_attr}
-            title="株探の企業情報ページへ移動し、決算情報や株価を確認します。">
-                決算・企業情報（株探）
-            </a>
-        """
-        
-        # 3. ニュース（株探） のボタン (新規追加)
-        kabutan_news_button_html = f"""
-            <a href="{kabutan_news_url}" target="_blank" style="{button_style} margin-left: 10px;" {hover_attr}
-            title="株探のニュースページへ移動し、最新の情報を確認します。">
-                ニュース（株探）
-            </a>
-        """
-        
-        # 3つのボタンを同じブロックでマークダウンとして表示することで並べる
-        st.markdown(detail_button_html + kabutan_finance_button_html + kabutan_news_button_html, unsafe_allow_html=True)
-
+        st.markdown(button_html, unsafe_allow_html=True)
 
         try:
             candle_url = "https://app.kumagai-stock.com/api/candle"
