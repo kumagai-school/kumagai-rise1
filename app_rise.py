@@ -154,7 +154,7 @@ else:
                     plot_bgcolor='#f8f8f8',  # チャート背景を薄いグレーに
                     paper_bgcolor='#f8f8f8'
                 )
-                st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False, "staticPlot": True})
+                st.plotly_chart(fig, width='stretch', config={"displayModeBar": False, "staticPlot": True})
             else:
                 st.caption("（チャートデータなし）")
         except Exception as e:
