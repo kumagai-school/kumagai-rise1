@@ -70,7 +70,7 @@ st.markdown("""
 
 
 # -------------------------------------------------------------
-# キャッシュのTTLを30分 (1800秒) に再設定します。
+# キャッシュのTTLを30分 (1800秒) に設定
 # -------------------------------------------------------------
 @st.cache_data(ttl=1800)  
 def load_data(source):
@@ -101,7 +101,7 @@ def load_data(source):
         return pd.DataFrame()
 
 # -------------------------------------------------------------
-# 🌟 【修正】 強制更新ボタンを削除し、ラジオボタンのみを配置
+# ラジオボタンの配置
 # -------------------------------------------------------------
 option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前", "4日前", "5日前"], horizontal=True)
 
@@ -115,12 +115,10 @@ data_source = {
 }[option]
 
 # -------------------------------------------------------------
-# 🌟 【維持】アプリ起動時（初回実行時）にキャッシュを強制クリアするロジック
+# アプリ起動時（初回実行時）にキャッシュを強制クリアするロジック
 # -------------------------------------------------------------
 if 'initial_data_loaded' not in st.session_state:
-    # 'initial_data_loaded'がまだ存在しない場合、アプリの初回実行と見なす
     st.session_state['initial_data_loaded'] = True
-    # load_dataに紐づく全てのキャッシュをクリアし、強制的に最新データを取得させる
     load_data.clear()
     
 # ここで最新データがロードされる
@@ -135,10 +133,29 @@ df = df[~df["code"].isin(exclude_codes)]
 if df.empty:
     st.info("データがありません。")
 else:
+    # -------------------------------------------------------------
+    # 🌟 共通スタイルを定義 (単一行で定義)
+    # -------------------------------------------------------------
+    
+    # スタイルを定義（共通スタイル）
+    button_style = "display: inline-block; padding: 3px 7px; margin-top: 4px; background-color: #f0f2f6; color: #4b4b4b; border: 1px solid #d3d3d3; border-radius: 4px; text-decoration: none; font-size: 11px; font-weight: normal; line-height: 1.2; white-space: nowrap; transition: background-color 0.1s;"
+    
+    # ホバー時のアクション（共通）
+    hover_attr = 'onmouseover="this.style.backgroundColor=\'#e8e8e8\'" onmouseout="this.style.backgroundColor=\'#f0f2f6\'"'
+
     for _, row in df.iterrows():
         code = row["code"]
         name = row.get("name", "")
+        
+        # リンク先のURLを定義
         code_link = f"https://kabuka-check-app.onrender.com/?code={code}"
+        
+        # リンク先：決算・企業情報（株探）
+        kabutan_finance_url = f"https://kabutan.jp/stock/?code={code}"
+        
+        # リンク先：ニュース（株探）
+        kabutan_news_url = f"https://kabutan.jp/stock/news?code={code}"
+        
         multiplier_html = f"<span style='color:green; font-weight:bold;'>{row['倍率']:.2f}倍</span>"
 
         st.markdown("<hr style='border-top: 2px solid #ccc;'>", unsafe_allow_html=True)
@@ -151,33 +168,19 @@ else:
                 📈 高値 ： {row["high"]}（{row["high_date"]}）
             </div>
         """, unsafe_allow_html=True)
+        
+        # 1. 詳細・半値押し計算へ のボタン (単一行f-string)
+        detail_button_html = f'<a href="{code_link}" target="_blank" style="{button_style}" {hover_attr} title="別ページで詳細な計算結果とチャートを確認します。">詳細・半値押し計算へ</a>'
+        
+        # 2. 決算・企業情報（株探） のボタン (単一行f-string)
+        kabutan_finance_button_html = f'<a href="{kabutan_finance_url}" target="_blank" style="{button_style} margin-left: 10px;" {hover_attr} title="株探の企業情報ページへ移動し、決算情報や株価を確認します。">決算・企業情報（株探）</a>'
+        
+        # 3. ニュース（株探） のボタン (単一行f-string)
+        kabutan_news_button_html = f'<a href="{kabutan_news_url}" target="_blank" style="{button_style} margin-left: 10px;" {hover_attr} title="株探のニュースページへ移動し、最新の情報を確認します。">ニュース（株探）</a>'
+        
+        # 3つのボタンを同じブロックでマークダウンとして表示することで並べる
+        st.markdown(detail_button_html + kabutan_finance_button_html + kabutan_news_button_html, unsafe_allow_html=True)
 
-        # -------------------------------------------------------------
-        # 修正点: st.link_buttonをカスタムHTMLリンクに置き換え、サイズを調整
-        # -------------------------------------------------------------
-        # カスタムリンクボタンを設置
-        # paddingとfont-sizeを小さくすることで、ボタンを極小化
-        button_html = f"""
-            <a href="{code_link}" target="_blank" style="
-                display: inline-block;
-                padding: 3px 7px; /* パディングを大幅に縮小 */
-                margin-top: 4px;
-                background-color: #f0f2f6; /* StreamlitのSecondaryに近い薄いグレー */
-                color: #4b4b4b; /* テキストカラー */
-                border: 1px solid #d3d3d3; /* 境界線 */
-                border-radius: 4px;
-                text-decoration: none;
-                font-size: 11px; /* フォントサイズを小さく */
-                font-weight: normal;
-                line-height: 1.2;
-                white-space: nowrap; /* テキストの折り返しを防ぐ */
-                transition: background-color 0.1s;
-            " onmouseover="this.style.backgroundColor='#e8e8e8'" onmouseout="this.style.backgroundColor='#f0f2f6'"
-            title="別ページで詳細な計算結果とチャートを確認します。">
-                詳細・半値押し計算へ
-            </a>
-        """
-        st.markdown(button_html, unsafe_allow_html=True)
 
         try:
             candle_url = "https://app.kumagai-stock.com/api/candle"
