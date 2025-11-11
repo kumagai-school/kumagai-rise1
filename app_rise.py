@@ -75,7 +75,7 @@ st.markdown("""
 # 再描画時の不要なAPI呼び出しを防ぎ、パフォーマンスを向上させます。
 # -------------------------------------------------------------
 
-@st.cache_data(ttl=18000) 
+@st.cache_data(ttl=1800) 
 def load_data(source):
     try:
         url_map = {
