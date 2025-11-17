@@ -18,11 +18,11 @@ if not st.session_state["authenticated"]:
         st.error("パスワードが違います。")
     st.stop()
 
-st.set_page_config(page_title="RシステムPRO・テスト環境", layout="wide")
+st.set_page_config(page_title="RシステムPRO", layout="wide")
 
 st.markdown("""
     <h1 style='text-align:left; color:#2E86C1; font-size:26px; line-height:1.4em;'>
-        ＲシステムPRO・テスト環境
+        ＲシステムPRO
     </h1>
     <h1 style='text-align:left; color:#2E86C1; font-size:20px; line-height:1.4em;'>
         『ルール1』スクリーニングシステム
@@ -104,9 +104,6 @@ def load_data(source):
 # ラジオボタンの配置
 # -------------------------------------------------------------
 option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前", "4日前", "5日前"], horizontal=True)
-
-# ← ここに一行
-st.write("DEBUG option =", repr(option))
 
 data_source = {
     "本日": "today",
