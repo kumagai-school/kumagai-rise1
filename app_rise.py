@@ -4,7 +4,7 @@ import requests
 import plotly.graph_objects as go
 
 # ✅ 許可するパスワードを複数指定（リスト形式）
-VALID_PASSWORDS = ["kuma", "5678"] # ユーザー提供のパスワードを使用
+VALID_PASSWORDS = ["kuma", "2345"] # ユーザー提供のパスワードを使用
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
@@ -59,7 +59,7 @@ st.markdown("""
     margin-bottom: 20px;
     line-height: 1.3em;
 '>
-<p style='margin: 6px 0;'>⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
+<p style='margin: 6px 0;'⚠️ 抽出された銘柄のすべてが「ルール1」に該当するわけではございません。</p>
 <p style='margin: 6px 0;'>⚠️ ETF など「ルール1」対象外の銘柄も含まれています。</p>
 <p style='margin: 6px 0;'>⚠️ **「本日の抽出結果」は約30分ごとに更新されます。**</p>
 <p style='margin: 6px 0;'>⚠️ 平日8:30〜9:00の間に短時間のメンテナンスが入ることがあります。</p>
@@ -103,7 +103,7 @@ def load_data(source):
 # -------------------------------------------------------------
 # ラジオボタンの配置
 # -------------------------------------------------------------
-option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前", "4日前", "5日前"], horizontal=True)
+option = st.radio("『高値』付けた日を選んでください", ["本日", "昨日", "2日前", "3日前", "4日前", "5日前(現在工事中)"], horizontal=True)
 
 data_source = {
     "本日": "today",
