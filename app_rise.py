@@ -124,6 +124,11 @@ if 'initial_data_loaded' not in st.session_state:
 # ここで最新データがロードされる
 df = load_data(data_source)
 
+# 🔽 除外コード適用前に「code」列の存在を確認(2025.12.11追加)
+if df.empty or "code" not in df.columns:
+    st.warning("データに 'code' 列がありませんでした。APIエラーの可能性があります。")
+    st.stop()
+
 # 🔽 除外したい銘柄コードを指定
 exclude_codes = {"9501", "9432", "7203"}  # 必要に応じて追加
 
