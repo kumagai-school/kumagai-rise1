@@ -4,7 +4,7 @@ import requests
 import plotly.graph_objects as go
 
 # ✅ 許可するパスワードを複数指定（リスト形式）
-VALID_PASSWORDS = ["kuma", "6789"] # ユーザー提供のパスワードを使用
+VALID_PASSWORDS = ["kuma", "3456"] # ユーザー提供のパスワードを使用
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
