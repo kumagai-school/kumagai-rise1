@@ -200,6 +200,28 @@ else:
 
             if chart_data:
                 df_chart = pd.DataFrame(chart_data)
+
+                # 日付を日付形式に変換
+                df_chart["date"] = pd.to_datetime(
+                    df_chart["date"],
+                    errors="coerce"
+                )
+
+                # 日付が不明なデータを除外し、古い順に並べる
+                df_chart = (
+                    df_chart
+                    .dropna(subset=["date"])
+                    .sort_values("date")
+                )
+
+                # APIデータの最新日を基準に、直近6ヵ月分だけ残す
+                latest_date = df_chart["date"].max()
+                start_date = latest_date - pd.DateOffset(months=6)
+
+                df_chart = df_chart[
+                    df_chart["date"] >= start_date
+                ].copy()
+
                 df_chart["date_str"] = pd.to_datetime(df_chart["date"]).dt.strftime("%Y-%m-%d")
 
                 fig = go.Figure(data=[
